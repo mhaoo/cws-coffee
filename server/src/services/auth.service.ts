@@ -78,7 +78,7 @@ export default class AuthService {
   };
 
   static generateRefreshToken = async (payload: any) => {
-    const token = uuidv4();
+    const token = jwt.sign(payload, refreshTokenSecret);
     const expiresAt = new Date();
     expiresAt.setDate(
       expiresAt.getDate() + ms(refreshTokenExpiry) / (1000 * 60 * 60 * 24) // Convert milliseconds to days

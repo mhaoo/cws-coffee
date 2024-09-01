@@ -1,11 +1,10 @@
 // database.ts
-import { Sequelize } from 'sequelize-typescript';
-import { User } from './models/user.model';
-import config from '../configs';
+import { Sequelize } from "sequelize-typescript";
+import { User } from "./models/user.model";
+import config from "../configs";
+import { KeyToken } from "./models/keytoken.model";
 
 const { database, dialect, username, password, host, port } = config.db;
-
-console.log(database, dialect, username, password, host, port)
 
 const connection = new Sequelize({
   database,
@@ -14,7 +13,7 @@ const connection = new Sequelize({
   password,
   host,
   port,
-  models: [User], // Add your models here
+  models: [User, KeyToken], // Add your models here
   logging: false, // Disable SQL logging, optional
 });
 
@@ -28,16 +27,16 @@ class Database {
   private async connect() {
     try {
       await connection.authenticate();
-      console.log('Connection has been established successfully.');
+      console.log("Connection has been established successfully.");
 
       // Sync models with the database
-      await connection.sync({ 
+      await connection.sync({
         alter: true,
-        force: false
-       }); // `force: true` drops and recreates tables
-      console.log('Models synchronized with the database.');
+        force: false,
+      }); // `force: true` drops and recreates tables
+      console.log("Models synchronized with the database.");
     } catch (error) {
-      console.error('Unable to connect to the database:', error);
+      console.error("Unable to connect to the database:", error);
     }
   }
 

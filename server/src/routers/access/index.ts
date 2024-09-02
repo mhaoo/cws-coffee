@@ -1,9 +1,11 @@
 import { Router, Request, Response } from "express";
 import UserController from "../../controllers/user.controller";
-import { userRouter } from "../user";
+import { authRouter } from "../auth";
+import { healthRouter } from "../health";
 
-const router: Router = Router()
+const router: Router = Router();
 
-router.use("/v1/user", userRouter);
+router.use("/v1/auth", authRouter);
+router.use("/v1/health", healthRouter);
 
-  export default router
+export default router;

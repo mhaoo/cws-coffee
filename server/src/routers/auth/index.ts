@@ -1,5 +1,4 @@
-import { Router, Request, Response } from "express";
-import userController from "../../controllers/user.controller";
+import { Router } from "express";
 import { handleAsync } from "../../utils";
 import authController from "../../controllers/auth.controller";
 

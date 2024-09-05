@@ -1,20 +1,10 @@
-import { generateKeyPairSync, randomBytes } from "crypto";
 import { KeyToken } from "../db/models/keytoken.model";
 import { User } from "../db/models/user.model";
-import * as jwt from "jsonwebtoken";
 import config from "../configs";
-import { v4 as uuidv4 } from "uuid";
 import ms from "ms";
 import * as bcrypt from "bcrypt";
 import { BadRequestError, ConflictError, NotFoundError } from "../core";
-import { getObjectFields } from "../utils";
-
-const {
-  refreshTokenSecret,
-  accessTokenSecret,
-  refreshTokenExpiry,
-  accessTokenExpiry,
-} = config.security;
+import { AuthUtils, getObjectFields } from "../utils";
 
 const { saltRounds } = config.security;
 
@@ -47,14 +37,22 @@ export default class AuthService {
         throw new BadRequestError("Failed to create user");
       }
 
-      const refreshToken = await AuthService.generateRefreshToken({
+      const refreshToken = await AuthUtils.generateRefreshToken({
         id: newUser.id,
         email: newUser.email,
       });
-      const accessToken = await AuthService.generateAccessToken({
+      const accessToken = await AuthUtils.generateAccessToken({
         id: newUser.id,
         email: newUser.email,
       });
+
+      await KeyToken.create({
+        userId: newUser.id,
+        token: refreshToken,
+        expiresAt: new Date(
+          Date.now() + ms(config.security.refreshTokenExpiry)
+        ),
+      } as KeyToken);
 
       return {
         user: getObjectFields(["id", "name", "email", "phone"], newUser),
@@ -70,28 +68,6 @@ export default class AuthService {
   };
 
   static login = async (email: string, password: string) => {};
-
-  static generateAccessToken = async (payload: any) => {
-    return jwt.sign(payload, accessTokenSecret, {
-      expiresIn: accessTokenExpiry,
-    });
-  };
-
-  static generateRefreshToken = async (payload: any) => {
-    const token = jwt.sign(payload, refreshTokenSecret);
-    const expiresAt = new Date();
-    expiresAt.setDate(
-      expiresAt.getDate() + ms(refreshTokenExpiry) / (1000 * 60 * 60 * 24) // Convert milliseconds to days
-    );
-
-    await KeyToken.create({
-      token,
-      expiresAt,
-      userId: payload.id,
-    } as KeyToken);
-
-    return token;
-  };
 
   static refreshAccessToken = async (refreshToken: string) => {
     const storedToken = await KeyToken.findOne({
@@ -110,7 +86,7 @@ export default class AuthService {
       throw new NotFoundError("User not found");
     }
 
-    const accessToken = await AuthService.generateAccessToken({
+    const accessToken = await AuthUtils.generateAccessToken({
       id: user.id,
       email: user.email,
     });

@@ -7,7 +7,7 @@ services:
       - ./server:/app          # Mount the local server directory
       - /app/node_modules      # Exclude node_modules from being overwritten
     ports:
-      - "${PORT}:4000"     # Use DEV_PORT from .env
+      - "${DEV_PORT}:3000"     # Use DEV_PORT from .env
     command: npm run dev       # Development mode
     env_file:
       - .env                   # Load environment variables from the .env file
@@ -19,20 +19,20 @@ services:
     image: postgres
     container_name: postgres
     environment:
-      POSTGRES_USER: ${DEV_USERNAME}
-      POSTGRES_PASSWORD: ${DEV_PASSWORD}
-      POSTGRES_DB: ${DEV_DATABASE}
+      POSTGRES_USER: ${DEV_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${DEV_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DEV_POSTGRES_NAME}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgresql:/var/lib/postgresql/data
     ports:
-      - "${DEV_PORT}:5432"
+      - "${DEV_POSTGRES_PORT}:5432"
 
   redis:
     image: redis:alpine
     container_name: redis
     ports:
-      - "6379:6379"
+      - "${DEV_REDIS_PORT}:6379"
     volumes:
       - redis_data:/data
 

@@ -12,7 +12,7 @@ import Feather from "react-native-vector-icons/Feather";
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
-export default CustomHeader = function ({ navigation }) {
+export default BasicHeader = function ({ navigation }) {
   return (
     <SafeAreaView style={styles.headerContainer}>
       <TouchableOpacity onPress={() => navigation.goBack()}>

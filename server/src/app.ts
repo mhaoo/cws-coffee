@@ -1,11 +1,10 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import router from "./routers";
-import { Sequelize } from "sequelize";
-import Database from "./db/init.postgres";
+import Postgres from "./db/init.postgres";
 import helmet from "helmet";
 import { GlobalErrorHandler } from "./core";
 
-Database.getInstance();
+Postgres.getInstance();
 
 const app: Express = express();
 

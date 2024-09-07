@@ -11,7 +11,21 @@ export class KeyToken extends Model<KeyToken> {
     type: DataType.STRING,
     allowNull: false,
   })
-  token!: string;
+  refreshToken!: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  used!: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  revoked!: boolean;
 
   @Column({
     type: DataType.DATE,

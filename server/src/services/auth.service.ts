@@ -14,24 +14,33 @@ export default class AuthService {
     password: string,
     name: string
   ) => {
+    const transaction = await User.sequelize?.transaction(); // Start a transaction
     try {
       if (!name || !email || !password) {
         throw new ConflictError("All fields are required");
       }
 
-      const existingUser = await User.findOne({ where: { email } });
+      const existingUser = await User.findOne({
+        where: { email },
+        transaction,
+      });
       if (existingUser) {
-        throw new Error("User already exists");
+        throw new ConflictError("User already exists");
       }
 
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newUser = await User.create({
-        name,
-        email,
-        password: hashedPassword,
-      } as User);
+      const newUser = await User.create(
+        {
+          name,
+          email,
+          password: hashedPassword,
+        } as User,
+        {
+          transaction,
+        }
+      );
 
       if (!newUser) {
         throw new BadRequestError("Failed to create user");
@@ -46,33 +55,102 @@ export default class AuthService {
         email: newUser.email,
       });
 
-      await KeyToken.create({
-        userId: newUser.id,
-        token: refreshToken,
-        expiresAt: new Date(
-          Date.now() + ms(config.security.refreshTokenExpiry)
-        ),
-      } as KeyToken);
+      await KeyToken.create(
+        {
+          userId: newUser.id,
+          refreshToken,
+          expiresAt: new Date(
+            Date.now() + ms(config.security.refreshTokenExpiry)
+          ),
+        } as KeyToken,
+        { transaction }
+      );
+
+      await transaction?.commit();
 
       return {
-        user: getObjectFields(["id", "name", "email", "phone"], newUser),
+        user: getObjectFields(["id", "name", "email"], newUser),
         tokens: {
           accessToken,
           refreshToken,
         },
       };
     } catch (error: any) {
-      console.error(error);
-      throw new BadRequestError(error.message);
+      await transaction?.rollback();
+      throw error;
     }
   };
 
-  static login = async (email: string, password: string) => {};
+  static loginWithEmail = async (email: string, password: string) => {
+    const transaction = await User.sequelize?.transaction();
+    try {
+      const user = await User.findOne({
+        where: {
+          email,
+        },
+        transaction,
+      });
+
+      if (!user) {
+        throw new NotFoundError("User not found");
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        throw new BadRequestError("Invalid credentials");
+      }
+
+      const refreshToken = await AuthUtils.generateRefreshToken({
+        id: user.id,
+        email: user.email,
+      });
+
+      const accessToken = await AuthUtils.generateAccessToken({
+        id: user.id,
+        email: user.email,
+      });
+
+      await KeyToken.upsert(
+        {
+          userId: user.id,
+          refreshToken,
+          expiresAt: new Date(
+            Date.now() + ms(config.security.refreshTokenExpiry)
+          ),
+        } as KeyToken,
+        { transaction }
+      );
+
+      await transaction?.commit();
+
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  };
+
+  static logout = async (refreshToken: string) => {
+    const storedToken = await KeyToken.findOne({
+      where: {
+        refreshToken,
+      },
+    });
+
+    if (!storedToken) {
+      throw new BadRequestError("Invalid refresh token");
+    }
+
+    await storedToken.destroy();
+  };
 
   static refreshAccessToken = async (refreshToken: string) => {
     const storedToken = await KeyToken.findOne({
       where: {
-        token: refreshToken,
+        refreshToken,
       },
     });
 

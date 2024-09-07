@@ -1,13 +1,18 @@
-import { Request, Response } from "express";
-import * as bcrypt from "bcrypt";
 import { User } from "../db/models/user.model";
-import { BadRequestError, ConflictError } from "../core";
-import config from "../configs";
-import AuthService from "./auth.service";
-import { getObjectFields } from "../utils";
-import { generateKeyPairSync, randomBytes } from "crypto";
-import { Transaction } from "sequelize";
+import { BadRequestError } from "../core";
 
-const { saltRounds } = config.security;
+export default class UserService {
+  static getUserInformation = async (id: string) => {
+    const user = await User.findByPk(id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
 
-export default class UserService {}
+    if (!user) {
+      throw new BadRequestError("User not found");
+    }
+
+    return user;
+  };
+}

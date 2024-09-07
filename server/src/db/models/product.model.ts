@@ -1,15 +1,15 @@
-// models/user.model.ts
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Model } from "sequelize";
+import { Column, DataType, Table } from "sequelize-typescript";
 
 @Table({
-  tableName: "users",
+  tableName: "products",
   timestamps: true,
 })
-export class User extends Model<User> {
+export class Product extends Model<Product> {
   @Column({
     type: DataType.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
+    autoIncrement: true,
   })
   id!: number;
 
@@ -21,20 +21,18 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-    unique: true,
   })
-  email!: string;
+  thumbnail!: string;
 
   @Column({
     type: DataType.STRING,
-    unique: true,
   })
-  phone!: string;
+  description!: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   })
-  password!: string;
+  price!: number;
 }

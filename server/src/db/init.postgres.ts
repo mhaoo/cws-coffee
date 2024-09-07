@@ -4,7 +4,7 @@ import { User } from "./models/user.model";
 import config from "../configs";
 import { KeyToken } from "./models/keytoken.model";
 
-const { database, dialect, username, password, host, port } = config.db;
+const { database, dialect, username, password, host, port } = config.postgres;
 
 const connection = new Sequelize({
   database,
@@ -13,12 +13,12 @@ const connection = new Sequelize({
   password,
   host,
   port,
-  models: [User, KeyToken], // Add your models here
+  models: [User, KeyToken],
   logging: false, // Disable SQL logging, optional
 });
 
-class Database {
-  private static instance: Database;
+class Postgres {
+  private static instance: Postgres;
 
   private constructor() {
     this.connect();
@@ -40,13 +40,13 @@ class Database {
     }
   }
 
-  public static getInstance(): Database {
-    if (!Database.instance) {
-      Database.instance = new Database();
+  public static getInstance(): Postgres {
+    if (!Postgres.instance) {
+      Postgres.instance = new Postgres();
     }
 
-    return Database.instance;
+    return Postgres.instance;
   }
 }
 
-export default Database;
+export default Postgres;

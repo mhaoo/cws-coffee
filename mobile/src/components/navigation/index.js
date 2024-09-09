@@ -1,18 +1,25 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import login from "../../screens/general/login/login";
 import register from "../../screens/general/register/register";
+import BasicHeader from "../header/basicHeader";
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Login" component={login} />
-      <Stack.Screen name="Register" component={register} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={register}
+        options={{
+          header: ({ navigation }) => <BasicHeader navigation={navigation} />,
+        }}
+      />
     </Stack.Navigator>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   SafeAreaView,
+  Platform,
+  StatusBar,
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 
@@ -16,9 +18,9 @@ export default BasicHeader = function ({ navigation }) {
   return (
     <SafeAreaView style={styles.headerContainer}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Feather name="chevron-left" size={25} color="black" />
+        <Feather name="chevron-left" size={28} style={styles.icon} />
       </TouchableOpacity>
-      <Text>Tao tai khoan</Text>
+      <Text style={styles.headerText}>Tạo tài khoản</Text>
     </SafeAreaView>
   );
 };
@@ -26,6 +28,14 @@ export default BasicHeader = function ({ navigation }) {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
-    backgroundColor: "#F7B757",
+    backgroundColor: "#F7B75740",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  icon: {
+    color: "black",
   },
 });

@@ -1,5 +1,4 @@
-import { Model } from "sequelize";
-import { Column, DataType, Table } from "sequelize-typescript";
+import { Model, Column, Table, DataType } from "sequelize-typescript";
 
 @Table({
   tableName: "products",
@@ -20,19 +19,14 @@ export class Product extends Model<Product> {
   name!: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT,
+    allowNull: true,
   })
-  thumbnail!: string;
+  description?: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.BOOLEAN,
+    defaultValue: true,
   })
-  description!: string;
-
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  })
-  price!: number;
+  isAvailable!: boolean;
 }

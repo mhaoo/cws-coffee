@@ -34,3 +34,6 @@ export {
   NoContentSuccess,
   PartialContentSuccess,
 };
+
+import appConnection from "./init.postgres";
+export { appConnection };

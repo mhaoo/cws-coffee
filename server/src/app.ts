@@ -1,13 +1,22 @@
 import express, { Express } from "express";
 import router from "./routers";
-import Postgres from "./db/init.postgres";
 import helmet from "helmet";
+import cors from "cors";
 import { GlobalErrorHandler } from "./core";
-
-Postgres.getInstance();
+import { initSequelize } from "./core/init.postgres";
 
 const app: Express = express();
 
+initSequelize()
+  .then(() => {
+    console.log("Database connected successfully.");
+  })
+  .catch((error) => {
+    console.error("Unable to connect to the database:", error);
+    process.exit(1);
+  });
+
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(router);

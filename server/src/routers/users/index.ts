@@ -7,6 +7,6 @@ const router: Router = Router();
 
 router.use(AuthMiddleWare.checkAuth);
 
-router.get("/:id", handleAsync(userController.getUserInformation));
+router.get("/:id", handleAsync(userController.getUser));
 
 export { router as usersRouter };

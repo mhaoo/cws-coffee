@@ -1,5 +1,5 @@
-import { KeyToken } from "../db/models/keytoken.model";
-import { User } from "../db/models/user.model";
+import { KeyToken } from "../models/users/keytoken.model";
+import { User } from "../models/users/user.model";
 import config from "../configs";
 import ms from "ms";
 import * as bcrypt from "bcrypt";
@@ -14,7 +14,7 @@ export default class AuthService {
     password: string,
     name: string
   ) => {
-    const transaction = await User.sequelize?.transaction(); // Start a transaction
+    const transaction = await User.sequelize?.transaction();
     try {
       if (!name || !email || !password) {
         throw new ConflictError("All fields are required");

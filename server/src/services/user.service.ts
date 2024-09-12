@@ -1,8 +1,8 @@
-import { User } from "../db/models/user.model";
+import { User } from "../models/users/user.model";
 import { BadRequestError } from "../core";
 
 export default class UserService {
-  static getUserInformation = async (id: string) => {
+  static getUser = async (id: string) => {
     const user = await User.findByPk(id, {
       attributes: {
         exclude: ["password"],

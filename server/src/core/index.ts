@@ -35,5 +35,5 @@ export {
   PartialContentSuccess,
 };
 
-import appConnection from "./init.postgres";
+import appConnection from "../init/init.postgres";
 export { appConnection };

@@ -1,5 +1,6 @@
+import { Op } from "sequelize";
 import { appConnection } from "../../../core";
-import { ProductDTO } from "../dto/products.dto";
+import { ProductDTO, ProductQueryParams } from "../dto/products.dto";
 import { Category, Option, OptionValue, Product } from "../models";
 
 export default class ProductService {
@@ -76,25 +77,75 @@ export default class ProductService {
     }
   };
 
-  static getAllProducts = async () => {
-    return Product.findAll({
+  static getAllProducts = async (query: ProductQueryParams) => {
+    const {
+      search,
+      categoryId,
+      isCustomizable,
+      isActive,
+      priceMin,
+      priceMax,
+      limit = 10,
+      offset = 0,
+      sortBy = "name",
+      sortDirection = "ASC",
+    } = query;
+
+    const whereClause: any = {};
+
+    // Search products by name or description
+    if (search) {
+      whereClause[Op.or] = [
+        { name: { [Op.iLike]: `%${search}%` } }, // case-insensitive search
+        { description: { [Op.iLike]: `%${search}%` } },
+      ];
+    }
+
+    // Filter by categoryId
+    if (categoryId) {
+      whereClause.categoryId = categoryId;
+    }
+
+    // Filter by isCustomizable
+    if (isCustomizable !== undefined) {
+      whereClause.isCustomizable = isCustomizable;
+    }
+
+    // Filter by isActive
+    if (isActive !== undefined) {
+      whereClause.isActive = isActive;
+    }
+
+    // Filter by price range
+    if (priceMin !== undefined || priceMax !== undefined) {
+      whereClause.price = {};
+      if (priceMin !== undefined) {
+        whereClause.price[Op.gte] = priceMin;
+      }
+      if (priceMax !== undefined) {
+        whereClause.price[Op.lte] = priceMax;
+      }
+    }
+
+    // Retrieve products with filters, pagination, and sorting
+    const products = await Product.findAndCountAll({
+      where: whereClause,
+      limit: limit,
+      offset: offset,
+      order: [[sortBy, sortDirection]],
       include: [
         {
           model: Option,
-          as: "options",
-          include: [
-            {
-              model: OptionValue,
-              as: "values",
-            },
-          ],
+          include: [OptionValue],
         },
         {
           model: Category,
-          as: "category",
+          attributes: ["id", "name"],
         },
       ],
     });
+
+    return products;
   };
 
   static getProductById = async (productId: number) => {

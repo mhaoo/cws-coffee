@@ -18,6 +18,19 @@ export interface ProductDTO {
   options?: Array<OptionDTO>; // Optional, used for Create/Update/Read
 }
 
+export interface ProductQueryParams {
+  search?: string; // for name/description search
+  categoryId?: number; // category filter
+  isCustomizable?: boolean; // customizable filter
+  isActive?: boolean; // active filter
+  priceMin?: number; // minimum price filter
+  priceMax?: number; // maximum price filter
+  limit?: number; // pagination limit
+  offset?: number; // pagination offset
+  sortBy?: string; // sort field
+  sortDirection?: "ASC" | "DESC"; // sorting direction
+}
+
 export interface VariantDTO {
   id?: number; // Optional for Create, required for Update/Delete, included in Read
   size?: string; // Required for Create/Update, included in Read

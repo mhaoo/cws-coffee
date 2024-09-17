@@ -26,7 +26,31 @@ class ProductController {
   };
 
   getAllProducts = async (req: Request, res: Response) => {
-    const products = await ProductService.getAllProducts();
+    const {
+      search,
+      categoryId,
+      isCustomizable,
+      isActive,
+      priceMin,
+      priceMax,
+      limit,
+      offset,
+      sortBy,
+      sortDirection,
+    } = req.query;
+
+    const products = await ProductService.getAllProducts({
+      search: search ? (search as string) : undefined,
+      categoryId: categoryId ? parseInt(categoryId as string) : undefined,
+      isCustomizable: isCustomizable ? isCustomizable === "true" : undefined,
+      isActive: isActive ? isActive === "true" : undefined,
+      priceMin: priceMin ? parseFloat(priceMin as string) : undefined,
+      priceMax: priceMax ? parseFloat(priceMax as string) : undefined,
+      limit: limit ? parseInt(limit as string) : 10,
+      offset: offset ? parseInt(offset as string) : 0,
+      sortBy: (sortBy as string) || "name",
+      sortDirection: (sortDirection as "ASC" | "DESC") || "ASC",
+    });
 
     new CreatedSuccess({
       data: products,

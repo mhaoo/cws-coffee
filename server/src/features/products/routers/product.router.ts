@@ -4,9 +4,7 @@ import { handleAsync } from "../../../utils";
 
 const router: Router = Router();
 
-router.get("/", (req, res) => {
-  res.send("Product API is working");
-});
+router.get("/", handleAsync(productController.getAllProducts));
 router.post("/", handleAsync(productController.createProduct));
 router.post("/category", handleAsync(categoryController.createCategory));
 

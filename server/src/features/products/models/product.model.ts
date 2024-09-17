@@ -46,6 +46,13 @@ export class Product extends Model<Product> {
   category!: Category;
 
   @Column({
+    type: DataType.DECIMAL(10, 2),
+    allowNull: true,
+    defaultValue: 0,
+  })
+  price!: number;
+
+  @Column({
     type: DataType.BOOLEAN,
     defaultValue: true,
   })
@@ -60,6 +67,6 @@ export class Product extends Model<Product> {
   @HasMany(() => Option)
   options!: Option[];
 
-  @HasMany(() => Variant)
-  variants!: Variant[];
+  // @HasMany(() => Variant)
+  // variants!: Variant[];
 }

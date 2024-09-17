@@ -65,17 +65,6 @@ export class OrderItem extends Model<OrderItem> {
     priceModifier: number;
   }>;
 
-  // Optional JSONB fields for product variants
-  @Column({
-    type: DataType.JSONB,
-    allowNull: true,
-  })
-  variants!: Array<{
-    variantName: string;
-    valueName: string;
-    priceModifier: number;
-  }>;
-
   @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,

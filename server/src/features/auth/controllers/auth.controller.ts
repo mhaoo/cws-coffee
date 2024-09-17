@@ -26,8 +26,6 @@ class AuthController {
   loginWithEmail = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
-    console.log(email, password);
-
     if (!email || !password) {
       throw new ConflictError("All fields are required");
     }

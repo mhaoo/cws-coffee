@@ -24,10 +24,10 @@ export class Order extends Model<Order> {
   id!: number;
 
   @Column({
-    type: DataType.ENUM("pending", "completed", "cancelled"),
+    type: DataType.ENUM("pending", "completed", "delivered", "cancelled"),
     defaultValue: "pending",
   })
-  status!: "pending" | "completed" | "cancelled";
+  status!: "pending" | "completed" | "delivered" | "cancelled";
 
   @Column({
     type: DataType.DECIMAL(10, 2),

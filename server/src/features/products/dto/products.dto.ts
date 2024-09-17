@@ -4,6 +4,7 @@ export interface ProductDTO {
   name?: string; // Required for Create/Update, optional for Read
   description?: string; // Optional for Create/Update/Read
   categoryId?: number; // Required for Create/Update, optional for Read
+  price?: number; // Required for Create/Update, included in Read
   categoryName?: string; // Only for Read operation
   isCustomizable?: boolean; // Required for Create/Update, optional for Read
   isActive?: boolean; // Required for Create/Update, optional for Read
@@ -11,7 +12,7 @@ export interface ProductDTO {
   updatedAt?: Date; // Only for Read operation
 
   // Variants
-  variants?: Array<VariantDTO>; // Optional, used for Create/Update/Read
+  // variants?: Array<VariantDTO>; // Optional, used for Create/Update/Read
 
   // Customizations
   options?: Array<OptionDTO>; // Optional, used for Create/Update/Read
@@ -38,6 +39,7 @@ export interface OptionDTO {
 
 export interface OptionValueDTO {
   id?: number; // Optional for Create, required for Update/Delete, included in Read
+  optionId?: number; // Required for Create/Update, included
   value?: string; // Required for Create/Update, included in Read
   priceAdjustment?: number; // Required for Create/Update, included in Read
   createdAt?: Date; // Only for Read operation

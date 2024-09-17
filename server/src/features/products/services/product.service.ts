@@ -1,6 +1,6 @@
 import { appConnection } from "../../../core";
 import { ProductDTO } from "../dto/products.dto";
-import { Option, OptionValue, Product, Variant } from "../models";
+import { Category, Option, OptionValue, Product } from "../models";
 
 export default class ProductService {
   static createProduct = async (productDTO: ProductDTO) => {
@@ -8,9 +8,9 @@ export default class ProductService {
       name,
       description,
       categoryId,
+      price,
       isCustomizable,
       isActive,
-      variants,
       options,
     } = productDTO;
     const transaction = await appConnection.transaction();
@@ -19,23 +19,13 @@ export default class ProductService {
         {
           name,
           description,
+          price,
           categoryId,
           isCustomizable,
           isActive,
         } as Product,
         { transaction }
       );
-
-      if (variants && variants.length !== 0) {
-        const productVariants = variants.map((variant) => ({
-          productId: product.id,
-          size: variant.size,
-          price: variant.price,
-          isAvailable: variant.isAvailable,
-        }));
-
-        await Variant.bulkCreate(productVariants as Variant[], { transaction });
-      }
 
       if (options && options.length !== 0) {
         for (const option of options) {
@@ -69,5 +59,47 @@ export default class ProductService {
       await transaction.rollback();
       throw error;
     }
+  };
+
+  static getAllProducts = async () => {
+    return Product.findAll({
+      include: [
+        {
+          model: Option,
+          as: "options",
+          include: [
+            {
+              model: OptionValue,
+              as: "values",
+            },
+          ],
+        },
+        {
+          model: Category,
+          as: "category",
+        },
+      ],
+    });
+  };
+
+  static getProductById = async (productId: number) => {
+    return Product.findByPk(productId, {
+      include: [
+        {
+          model: Option,
+          as: "options",
+          include: [
+            {
+              model: OptionValue,
+              as: "values",
+            },
+          ],
+        },
+        {
+          model: Category,
+          as: "category",
+        },
+      ],
+    });
   };
 }

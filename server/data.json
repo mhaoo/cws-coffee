@@ -1,0 +1,167 @@
+[
+  {
+    "name": "Pumpkin Spice Latte",
+    "description": "A seasonal favorite with pumpkin, cinnamon, and nutmeg flavors",
+    "categoryId": 1,
+    "price": 5.00,
+    "isCustomizable": true,
+    "isActive": true,
+    "options": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "values": [
+          { "value": "Small", "priceAdjustment": 0.00 },
+          { "value": "Medium", "priceAdjustment": 0.50 },
+          { "value": "Large", "priceAdjustment": 1.00 }
+        ]
+      },
+      {
+        "name": "Milk Type",
+        "isRequired": false,
+        "values": [
+          { "value": "Whole Milk", "priceAdjustment": 0.00 },
+          { "value": "Oat Milk", "priceAdjustment": 0.50 },
+          { "value": "Almond Milk", "priceAdjustment": 0.50 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cappuccino",
+    "description": "A classic coffee drink with steamed milk and foam",
+    "categoryId": 1,
+    "price": 4.00,
+    "isCustomizable": true,
+    "isActive": true,
+    "options": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "values": [
+          { "value": "Small", "priceAdjustment": 0.00 },
+          { "value": "Medium", "priceAdjustment": 0.50 },
+          { "value": "Large", "priceAdjustment": 1.00 }
+        ]
+      },
+      {
+        "name": "Milk Type",
+        "isRequired": false,
+        "values": [
+          { "value": "Whole Milk", "priceAdjustment": 0.00 },
+          { "value": "Skim Milk", "priceAdjustment": 0.00 },
+          { "value": "Almond Milk", "priceAdjustment": 0.50 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Mocha",
+    "description": "Rich espresso combined with chocolate syrup, steamed milk, and whipped cream",
+    "categoryId": 1,
+    "price": 5.50,
+    "isCustomizable": true,
+    "isActive": true,
+    "options": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "values": [
+          { "value": "Small", "priceAdjustment": 0.00 },
+          { "value": "Medium", "priceAdjustment": 0.50 },
+          { "value": "Large", "priceAdjustment": 1.00 }
+        ]
+      },
+      {
+        "name": "Milk Type",
+        "isRequired": false,
+        "values": [
+          { "value": "Whole Milk", "priceAdjustment": 0.00 },
+          { "value": "Oat Milk", "priceAdjustment": 0.50 },
+          { "value": "Soy Milk", "priceAdjustment": 0.50 }
+        ]
+      },
+      {
+        "name": "Whipped Cream",
+        "isRequired": false,
+        "values": [
+          { "value": "With Whipped Cream", "priceAdjustment": 0.25 },
+          { "value": "Without Whipped Cream", "priceAdjustment": 0.00 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Iced Americano",
+    "description": "A strong and refreshing iced coffee made with espresso and water",
+    "categoryId": 1,
+    "price": 3.50,
+    "isCustomizable": true,
+    "isActive": true,
+    "options": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "values": [
+          { "value": "Small", "priceAdjustment": 0.00 },
+          { "value": "Medium", "priceAdjustment": 0.50 },
+          { "value": "Large", "priceAdjustment": 1.00 }
+        ]
+      },
+      {
+        "name": "Ice Level",
+        "isRequired": false,
+        "values": [
+          { "value": "Extra Ice", "priceAdjustment": 0.00 },
+          { "value": "Less Ice", "priceAdjustment": 0.00 },
+          { "value": "No Ice", "priceAdjustment": 0.00 }
+        ]
+      },
+      {
+        "name": "Sweetener",
+        "isRequired": false,
+        "values": [
+          { "value": "Sugar", "priceAdjustment": 0.00 },
+          { "value": "No Sugar", "priceAdjustment": 0.00 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Matcha Latte",
+    "description": "A blend of matcha green tea, steamed milk, and a touch of sweetness",
+    "categoryId": 1,
+    "price": 5.00,
+    "isCustomizable": true,
+    "isActive": true,
+    "options": [
+      {
+        "name": "Size",
+        "isRequired": true,
+        "values": [
+          { "value": "Small", "priceAdjustment": 0.00 },
+          { "value": "Medium", "priceAdjustment": 0.50 },
+          { "value": "Large", "priceAdjustment": 1.00 }
+        ]
+      },
+      {
+        "name": "Milk Type",
+        "isRequired": false,
+        "values": [
+          { "value": "Whole Milk", "priceAdjustment": 0.00 },
+          { "value": "Oat Milk", "priceAdjustment": 0.50 },
+          { "value": "Soy Milk", "priceAdjustment": 0.50 }
+        ]
+      },
+      {
+        "name": "Sweetness Level",
+        "isRequired": false,
+        "values": [
+          { "value": "Regular Sweet", "priceAdjustment": 0.00 },
+          { "value": "Less Sweet", "priceAdjustment": 0.00 },
+          { "value": "Unsweetened", "priceAdjustment": 0.00 }
+        ]
+      }
+    ]
+  }
+]

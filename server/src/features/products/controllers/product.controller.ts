@@ -4,6 +4,16 @@ import { ProductDTO } from "../dto/products.dto";
 import { CreatedSuccess } from "../../../core";
 
 class ProductController {
+  createProducts = async (req: Request, res: Response) => {
+    const products: ProductDTO[] = req.body;
+
+    const createdProducts = await ProductService.createProducts(products);
+
+    new CreatedSuccess({
+      message: "Products created successfully",
+      data: createdProducts,
+    }).send(res);
+  };
   createProduct = async (req: Request, res: Response) => {
     const productDTO: ProductDTO = req.body;
 

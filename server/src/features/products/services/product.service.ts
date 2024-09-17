@@ -3,6 +3,21 @@ import { ProductDTO } from "../dto/products.dto";
 import { Category, Option, OptionValue, Product } from "../models";
 
 export default class ProductService {
+  static createProducts = async (products: ProductDTO[]) => {
+    const transaction = await appConnection.transaction();
+    try {
+      const createdProducts = await Promise.all(
+        products.map((product) => ProductService.createProduct(product))
+      );
+
+      await transaction.commit();
+
+      return createdProducts;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  };
   static createProduct = async (productDTO: ProductDTO) => {
     const {
       name,

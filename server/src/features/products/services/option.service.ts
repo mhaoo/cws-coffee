@@ -1,6 +1,6 @@
 import { BadRequestError } from "../../../core";
 import { OptionDTO } from "../dto/products.dto";
-import { Option, OptionValue, Variant } from "../models";
+import { Option, OptionValue } from "../models";
 
 export default class OptionService {
   static createOption = async (optionDTO: OptionDTO) => {

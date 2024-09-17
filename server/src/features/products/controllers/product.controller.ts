@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import ProductService from "../services/product.service";
 import { ProductDTO } from "../dto/products.dto";
-import { CreatedSuccess } from "../../../core";
+import { CreatedSuccess, OkSuccess } from "../../../core";
 
 class ProductController {
   createProducts = async (req: Request, res: Response) => {
@@ -14,6 +14,7 @@ class ProductController {
       data: createdProducts,
     }).send(res);
   };
+
   createProduct = async (req: Request, res: Response) => {
     const productDTO: ProductDTO = req.body;
 
@@ -22,6 +23,16 @@ class ProductController {
     new CreatedSuccess({
       message: "Product created successfully",
       data: newProduct,
+    }).send(res);
+  };
+
+  getProductById = async (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id);
+
+    const product = await ProductService.getProductById(productId);
+
+    new OkSuccess({
+      data: product,
     }).send(res);
   };
 
@@ -52,7 +63,7 @@ class ProductController {
       sortDirection: (sortDirection as "ASC" | "DESC") || "ASC",
     });
 
-    new CreatedSuccess({
+    new OkSuccess({
       data: products,
     }).send(res);
   };

@@ -42,44 +42,44 @@ export default Login = function ({ navigation }) {
   const [verificationId, setVerificationId] = useState(null);
   const recaptchaVerifier = useRef(null);
 
-  const authContext = useContext(AuthContext);
-  const { publicAxios } = useContext(AxiosContext);
+  // const authContext = useContext(AuthContext);
+  // const { publicAxios } = useContext(AxiosContext);
 
   const [isVisible, setIsVisible] = useState(false); // State to control BottomSheet visibility
 
-  // const handleLoginPress = () => {
-  //   // setIsVisible(true); // Show BottomSheet when "Đăng nhập" is pressed
-  //   // sendVerification();
-  //   navigation.navigate("Register");
-  // };
-
-  const handleLoginPress = async () => {
-    try {
-      const response = await publicAxios.post("/auth/login/email", {
-        email: inputEmail,
-        password: inputPass,
-      });
-
-      console.log(response.data);
-
-      const { accessToken, refreshToken } = response.data;
-      authContext.setAuthState({
-        accessToken,
-        refreshToken,
-        authenticated: true,
-      });
-
-      await Keychain.setGenericPassword(
-        "token",
-        JSON.stringify({
-          accessToken,
-          refreshToken,
-        })
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  const handleLoginPress = () => {
+    // setIsVisible(true); // Show BottomSheet when "Đăng nhập" is pressed
+    // sendVerification();
+    navigation.navigate("Home");
   };
+
+  // const handleLoginPress = async () => {
+  //   try {
+  //     const response = await publicAxios.post("/auth/login/email", {
+  //       email: inputEmail,
+  //       password: inputPass,
+  //     });
+
+  //     console.log(response.data);
+
+  //     const { accessToken, refreshToken } = response.data;
+  //     authContext.setAuthState({
+  //       accessToken,
+  //       refreshToken,
+  //       authenticated: true,
+  //     });
+
+  //     await Keychain.setGenericPassword(
+  //       "token",
+  //       JSON.stringify({
+  //         accessToken,
+  //         refreshToken,
+  //       })
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const checkPasswordValidity = (value) => {
     const isNonWhiteSpace = /^\S*$/;

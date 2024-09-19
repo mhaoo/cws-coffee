@@ -1,13 +1,19 @@
+import { partialProductSchema, productSchema } from "./../dto/products.dto";
 import { Request, Response } from "express";
 import ProductService from "../services/product.service";
-import { ProductDTO } from "../dto/products.dto";
-import { CreatedSuccess, OkSuccess } from "../../../core";
+import { productListSchema } from "../dto/products.dto";
+import { BadRequestError, CreatedSuccess, OkSuccess } from "../../../core";
 
 class ProductController {
   createProducts = async (req: Request, res: Response) => {
-    const products: ProductDTO[] = req.body;
+    const products = productListSchema.safeParse(req.body);
 
-    const createdProducts = await ProductService.createProducts(products);
+    if (!products.success) {
+      const validationErrors = products.error.errors[0].message;
+      throw new BadRequestError(validationErrors);
+    }
+
+    const createdProducts = await ProductService.createProducts(products.data);
 
     new CreatedSuccess({
       message: "Products created successfully",
@@ -16,9 +22,14 @@ class ProductController {
   };
 
   createProduct = async (req: Request, res: Response) => {
-    const productDTO: ProductDTO = req.body;
+    const product = productSchema.safeParse(req.body);
 
-    const newProduct = await ProductService.createProduct(productDTO);
+    if (!product.success) {
+      const validationErrors = product.error.errors[0].message;
+      throw new BadRequestError(validationErrors);
+    }
+
+    const newProduct = await ProductService.createProduct(product.data);
 
     new CreatedSuccess({
       message: "Product created successfully",
@@ -28,6 +39,10 @@ class ProductController {
 
   getProductById = async (req: Request, res: Response) => {
     const productId = parseInt(req.params.id);
+
+    if (!productId) {
+      throw new BadRequestError("Product ID is not valid");
+    }
 
     const product = await ProductService.getProductById(productId);
 
@@ -65,6 +80,32 @@ class ProductController {
 
     new OkSuccess({
       data: products,
+    }).send(res);
+  };
+
+  updateProduct = async (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id);
+    const product = req.body;
+
+    const updatedProduct = await ProductService.updateProduct(
+      productId,
+      product
+    );
+
+    new OkSuccess({
+      message: "Product updated successfully",
+      data: updatedProduct,
+    }).send(res);
+  };
+
+  deleteProduct = async (req: Request, res: Response) => {
+    const productId = parseInt(req.params.id);
+
+    const result = await ProductService.deleteProduct(productId);
+
+    new OkSuccess({
+      message: "Product deleted successfully",
+      data: result,
     }).send(res);
   };
 }

@@ -1,9 +1,10 @@
 import { Sequelize } from "sequelize-typescript";
 import config from "../configs";
-import { productModels } from "./../features/products/models/index";
+import { productModels } from "../features/products/models/index";
 import { userModels } from "../features/users/models";
 import { authModels } from "../features/auth/models";
 import { orderModels } from "../features/orders/models";
+import { logger } from "../utils";
 
 const { database, dialect, username, password, host, port } = config.postgres;
 
@@ -14,14 +15,14 @@ const appConnection = new Sequelize({
   password,
   host,
   port,
-  models: [], // Models will be added dynamically
+  models: [],
   logging: false, // Disable SQL logging, optional
 });
 
 export async function initSequelize() {
   try {
     await appConnection.authenticate();
-    console.log("Connection established successfully.");
+    logger.info("Connection established successfully.");
 
     appConnection.addModels([
       ...Object.values(userModels),
@@ -31,6 +32,11 @@ export async function initSequelize() {
     ]);
 
     await appConnection.sync({ alter: true, force: false });
+
+    await userModels.Role.insertDefaultRoles();
+    await productModels.Category.insertDefaultCategories();
+    await productModels.Product.insertDefaultProducts();
+    await orderModels.OrderStatus.insertDefaultOrderStatuses();
   } catch (error) {
     throw error;
   }

@@ -5,6 +5,7 @@ import { KeyToken } from "../models";
 import { User } from "../../users/models";
 import { AuthUtils, getObjectFields } from "../../../utils";
 import { BadRequestError, ConflictError, NotFoundError } from "../../../core";
+import { RoleType } from "../../users/dto";
 
 const { saltRounds } = config.security;
 
@@ -35,6 +36,7 @@ export default class AuthService {
         {
           name,
           email,
+          roleId: RoleType.USER,
           password: hashedPassword,
         } as User,
         {

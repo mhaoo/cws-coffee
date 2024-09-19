@@ -1,10 +1,16 @@
 import { Op } from "sequelize";
-import { appConnection } from "../../../core";
-import { ProductDTO, ProductQueryParams } from "../dto/products.dto";
+import { appConnection, BadRequestError, NotFoundError } from "../../../core";
+import {
+  CreateProductDTO,
+  partialProductSchema,
+  PatchProductDTO,
+  ProductQueryParams,
+  productSchema,
+} from "../dto/products.dto";
 import { Category, Option, OptionValue, Product } from "../models";
 
 export default class ProductService {
-  static createProducts = async (products: ProductDTO[]) => {
+  static createProducts = async (products: CreateProductDTO[]) => {
     const transaction = await appConnection.transaction();
     try {
       const createdProducts = await Promise.all(
@@ -19,7 +25,7 @@ export default class ProductService {
       throw error;
     }
   };
-  static createProduct = async (productDTO: ProductDTO) => {
+  static createProduct = async (productDTO: CreateProductDTO) => {
     const {
       name,
       description,
@@ -93,30 +99,26 @@ export default class ProductService {
 
     const whereClause: any = {};
 
-    // Search products by name or description
     if (search) {
+      // return ProductService.searchProducts(search);
       whereClause[Op.or] = [
-        { name: { [Op.iLike]: `%${search}%` } }, // case-insensitive search
+        { name: { [Op.iLike]: `%${search}%` } },
         { description: { [Op.iLike]: `%${search}%` } },
       ];
     }
 
-    // Filter by categoryId
     if (categoryId) {
       whereClause.categoryId = categoryId;
     }
 
-    // Filter by isCustomizable
     if (isCustomizable !== undefined) {
       whereClause.isCustomizable = isCustomizable;
     }
 
-    // Filter by isActive
     if (isActive !== undefined) {
       whereClause.isActive = isActive;
     }
 
-    // Filter by price range
     if (priceMin !== undefined || priceMax !== undefined) {
       whereClause.price = {};
       if (priceMin !== undefined) {
@@ -127,7 +129,6 @@ export default class ProductService {
       }
     }
 
-    // Retrieve products with filters, pagination, and sorting
     const products = await Product.findAndCountAll({
       where: whereClause,
       limit: limit,
@@ -167,5 +168,96 @@ export default class ProductService {
         },
       ],
     });
+  };
+
+  static searchProducts = async (keyword: string) => {
+    return Product.findAll({
+      include: [
+        {
+          model: Option,
+          as: "options",
+          include: [
+            {
+              model: OptionValue,
+              as: "values",
+              attributes: ["value"],
+              required: false,
+            },
+          ],
+          required: false,
+        },
+      ],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.iLike]: `%${keyword}%`,
+            },
+          },
+          {
+            "$options.values.value$": {
+              [Op.iLike]: `%${keyword}%`,
+            },
+          },
+        ],
+      },
+      group: ["Product.id", "options.id", "options.values.id"],
+    });
+  };
+
+  static deleteProduct = async (productId: number) => {
+    const transaction = await appConnection.transaction();
+    try {
+      const product = await ProductService.getProductById(productId);
+
+      if (!product) {
+        throw new NotFoundError("Product not found");
+      }
+
+      for (const option of product.options) {
+        await OptionValue.destroy({
+          where: {
+            optionId: option.id,
+          },
+          transaction,
+        });
+
+        await option.destroy({ transaction });
+      }
+
+      await product.destroy({ transaction });
+
+      await transaction.commit();
+
+      return product.id;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  };
+
+  static updateProduct = async (productId: number, product: any) => {
+    const validation = productSchema.safeParse(product);
+
+    if (!validation.success) {
+      const validationErrors = product.error.errors[0].message;
+      throw new BadRequestError(validationErrors);
+    }
+
+    const validatedData = validation.data;
+
+    const transaction = await appConnection.transaction();
+    try {
+      await ProductService.deleteProduct(productId);
+
+      const updatedProduct = await ProductService.createProduct(validatedData);
+
+      await transaction.commit();
+
+      return updatedProduct;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
   };
 }

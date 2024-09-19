@@ -7,10 +7,11 @@ import {
   BelongsTo,
 } from "sequelize-typescript";
 import { Order } from "./order.model";
+import { Product } from "../../products/models";
 
 @Table({
   tableName: "order_items",
-  timestamps: true, // Adds createdAt and updatedAt
+  timestamps: true,
 })
 export class OrderItem extends Model<OrderItem> {
   @Column({
@@ -30,23 +31,15 @@ export class OrderItem extends Model<OrderItem> {
   @BelongsTo(() => Order)
   order!: Order;
 
+  @ForeignKey(() => Product)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
   productId!: number;
 
-  @Column({
-    type: DataType.STRING(100),
-    allowNull: false,
-  })
-  productName!: string;
-
-  @Column({
-    type: DataType.DECIMAL(10, 2),
-    allowNull: false,
-  })
-  unitPrice!: number;
+  @BelongsTo(() => Product)
+  product!: Product;
 
   @Column({
     type: DataType.INTEGER,
@@ -54,7 +47,6 @@ export class OrderItem extends Model<OrderItem> {
   })
   quantity!: number;
 
-  // Optional JSONB fields for product options
   @Column({
     type: DataType.JSONB,
     allowNull: true,
@@ -66,8 +58,8 @@ export class OrderItem extends Model<OrderItem> {
   }>;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.FLOAT,
     allowNull: false,
   })
-  totalPrice!: number; // Total price for this item (quantity * (unitPrice + modifiers))
+  totalPrice!: number; // (basePrice + modifierTotal) * quantity
 }

@@ -20,7 +20,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
       },
     ],
   },
-  apis: ["./src/routes/*.ts"], // Path to your route files
+  apis: [`${__dirname}/../features/**/*.ts`],
 };
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions);

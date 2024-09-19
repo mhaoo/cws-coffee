@@ -37,7 +37,7 @@ export class Variant extends Model<Variant> {
   size!: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.FLOAT,
     allowNull: false,
   })
   price!: number;

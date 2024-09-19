@@ -12,6 +12,10 @@ const {
 const { saltRounds } = config.security;
 
 class AuthUtils {
+  static comparePasswords = async (password: string, hash: string) => {
+    return bcrypt.compare(password, hash);
+  };
+
   static generateAccessToken = async (payload: any) => {
     return jwt.sign(payload, accessTokenSecret, {
       expiresIn: accessTokenExpiry,

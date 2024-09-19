@@ -6,10 +6,13 @@ import {
   DataType,
   HasOne,
   HasMany,
+  ForeignKey,
+  BelongsTo,
 } from "sequelize-typescript";
-import { Customer } from "./customer.model";
-import { Employee } from "./employee.model";
 import { KeyToken } from "../../auth/models/keytoken.model";
+import { Role } from "./role.model";
+import { RoleType } from "../dto";
+import { Order } from "../../orders/models";
 
 @Table({
   tableName: "users",
@@ -41,18 +44,25 @@ export class User extends Model<User> {
   })
   phone!: string;
 
+  @ForeignKey(() => Role)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  roleId!: number;
+
+  @BelongsTo(() => Role)
+  role!: Role;
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   password!: string;
 
-  @HasOne(() => Customer)
-  customer!: Customer;
-
-  @HasOne(() => Employee)
-  employee!: Employee;
-
   @HasMany(() => KeyToken)
   keytokens!: KeyToken[];
+
+  @HasMany(() => Order)
+  orders!: Order[];
 }

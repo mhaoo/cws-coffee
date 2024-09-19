@@ -10,6 +10,9 @@ import {
 import { Variant } from "./variant.model";
 import { Category } from "./category.model";
 import { Option } from "./option.model";
+import { defaultProducts } from "../../../constants/initData";
+import ProductService from "../services/product.service";
+import { logger } from "../../../utils";
 
 @Table({
   tableName: "products",
@@ -46,7 +49,7 @@ export class Product extends Model<Product> {
   category!: Category;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.FLOAT,
     allowNull: true,
     defaultValue: 0,
   })
@@ -69,4 +72,13 @@ export class Product extends Model<Product> {
 
   // @HasMany(() => Variant)
   // variants!: Variant[];
+
+  static async insertDefaultProducts() {
+    const products = await Product.findAll();
+
+    if (products.length === 0) {
+      await ProductService.createProducts(defaultProducts);
+      logger.info("Default products inserted.");
+    }
+  }
 }

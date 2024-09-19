@@ -7,9 +7,9 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { Product } from "../../products/models/product.model";
-import { Customer } from "../../users/models";
+import { User } from "../../users/models";
 import { OrderItem } from "./orderItem.model";
+import { OrderStatus } from "./orderStatus.model";
 
 @Table({
   tableName: "orders",
@@ -23,27 +23,51 @@ export class Order extends Model<Order> {
   })
   id!: number;
 
-  @Column({
-    type: DataType.ENUM("pending", "completed", "delivered", "cancelled"),
-    defaultValue: "pending",
-  })
-  status!: "pending" | "completed" | "delivered" | "cancelled";
-
-  @Column({
-    type: DataType.DECIMAL(10, 2),
-    allowNull: false,
-  })
-  totalPrice!: number;
-
-  @ForeignKey(() => Customer)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
   customerId!: number;
 
-  @BelongsTo(() => Customer)
-  customer!: Customer;
+  @BelongsTo(() => User)
+  customer!: User;
+
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: false,
+  })
+  total!: number; // Total price of the order
+
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: false,
+  })
+  tax!: number; // Tax amount
+
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+  })
+  discount!: number; // Discount amount, if any
+
+  @Column({
+    type: DataType.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+  })
+  shippingFee!: number; // Shipping fee, if any
+
+  @ForeignKey(() => OrderStatus) // Optional: If moving status to its own table
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  statusId!: number;
+
+  @BelongsTo(() => OrderStatus)
+  status!: OrderStatus;
 
   @HasMany(() => OrderItem)
   orderItems!: OrderItem[];

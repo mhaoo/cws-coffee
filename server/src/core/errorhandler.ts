@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { HttpStatusCodes, HttpStatusMessages } from "../constants";
+import { logger } from "../utils";
 
 class GlobalErrorHandler {
   static handleError(
@@ -11,7 +12,7 @@ class GlobalErrorHandler {
     const statusCode =
       error.statusCode || HttpStatusCodes.INTERNAL_SERVER_ERROR;
     const message = error.message || HttpStatusMessages.INTERNAL_SERVER_ERROR;
-    console.error(`[Error] ${message}`, error);
+    logger.error(`[Error] ${message}`, error);
 
     res.status(statusCode).json({
       status: "error",

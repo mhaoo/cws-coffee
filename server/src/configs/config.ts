@@ -6,6 +6,9 @@ const config = {
   app: {
     port: process.env.DEV_PORT || "3000",
   },
+  logger: {
+    level: process.env.LOG_LEVEL || "info",
+  },
   postgres: {
     database: process.env.DEV_POSTGRES_DATABASE || "",
     dialect: (process.env.DEV_POSTGRES_DIALECT as any) || "postgres", // Specify the dialect type

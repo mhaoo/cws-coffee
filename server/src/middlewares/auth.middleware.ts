@@ -2,13 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { AuthUtils } from "../utils";
 import { UnauthorizedError } from "../core";
 
-interface AuthenticatedRequest extends Request {
-  userId?: string;
-}
-
 class AuthMiddleWare {
   static checkAuth = async (
-    req: AuthenticatedRequest,
+    req: Request,
     res: Response,
     next: NextFunction
   ) => {

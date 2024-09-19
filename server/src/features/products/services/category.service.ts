@@ -17,4 +17,24 @@ export default class CategoryService {
       throw error;
     }
   };
+
+  static getCategoryById = async (categoryId: number) => {
+    try {
+      const category = await Category.findByPk(categoryId);
+
+      return category;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  static getAllCategories = async () => {
+    try {
+      const categories = await Category.findAll();
+
+      return categories;
+    } catch (error) {
+      throw error;
+    }
+  };
 }

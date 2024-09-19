@@ -37,7 +37,7 @@ export class OptionValue extends Model<OptionValue> {
   value!: string;
 
   @Column({
-    type: DataType.DECIMAL(10, 2),
+    type: DataType.FLOAT,
     defaultValue: 0.0,
   })
   priceAdjustment!: number;

@@ -12,8 +12,8 @@ const {
 const { saltRounds } = config.security;
 
 class AuthUtils {
-  static comparePasswords = async (password: string, hash: string) => {
-    return bcrypt.compare(password, hash);
+  static compare = async (origin: string, hash: string) => {
+    return bcrypt.compare(origin, hash);
   };
 
   static generateAccessToken = async (payload: any) => {
@@ -36,8 +36,9 @@ class AuthUtils {
     return jwt.verify(token, refreshTokenSecret);
   };
 
-  static hashPassword = async (password: string) => {
-    return bcrypt.hash(password, saltRounds);
+  static hash = async (password: string) => {
+    const salt = await bcrypt.genSalt(saltRounds);
+    return bcrypt.hash(password, salt);
   };
 }
 

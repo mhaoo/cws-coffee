@@ -1,13 +1,19 @@
 import config from "../../../configs";
 import ms from "ms";
 import * as bcrypt from "bcrypt";
-import { KeyToken } from "../models";
 import { User } from "../../users/models";
 import { AuthUtils, getObjectFields } from "../../../utils";
-import { BadRequestError, ConflictError, NotFoundError } from "../../../core";
+import {
+  BadRequestError,
+  ConflictError,
+  NotFoundError,
+  SecurityBreachError,
+  UnauthorizedError,
+} from "../../../core";
 import { RoleType } from "../../users/dto";
+import redisConnection from "../../../init/redis.init";
 
-const { saltRounds } = config.security;
+const { refreshTokenExpiry } = config.security;
 
 export default class AuthService {
   static registerWithEmail = async (
@@ -25,12 +31,12 @@ export default class AuthService {
         where: { email },
         transaction,
       });
+
       if (existingUser) {
         throw new ConflictError("User already exists");
       }
 
-      const salt = await bcrypt.genSalt(saltRounds);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await AuthUtils.hash(password);
 
       const newUser = await User.create(
         {
@@ -50,22 +56,18 @@ export default class AuthService {
 
       const refreshToken = await AuthUtils.generateRefreshToken({
         id: newUser.id,
-        email: newUser.email,
       });
       const accessToken = await AuthUtils.generateAccessToken({
         id: newUser.id,
-        email: newUser.email,
       });
 
-      await KeyToken.create(
-        {
-          userId: newUser.id,
-          refreshToken,
-          expiresAt: new Date(
-            Date.now() + ms(config.security.refreshTokenExpiry)
-          ),
-        } as KeyToken,
-        { transaction }
+      const hashedToken = await AuthUtils.hash(refreshToken);
+
+      await redisConnection.set(
+        `refreshToken:${newUser.id}`,
+        hashedToken,
+        "EX",
+        ms(refreshTokenExpiry) / 1000
       );
 
       await transaction?.commit();
@@ -105,23 +107,17 @@ export default class AuthService {
 
       const refreshToken = await AuthUtils.generateRefreshToken({
         id: user.id,
-        email: user.email,
       });
 
       const accessToken = await AuthUtils.generateAccessToken({
         id: user.id,
-        email: user.email,
       });
 
-      await KeyToken.upsert(
-        {
-          userId: user.id,
-          refreshToken,
-          expiresAt: new Date(
-            Date.now() + ms(config.security.refreshTokenExpiry)
-          ),
-        } as KeyToken,
-        { transaction }
+      await redisConnection.set(
+        `refreshToken:${user.id}`,
+        refreshToken,
+        "EX",
+        ms(refreshTokenExpiry) / 1000
       );
 
       await transaction?.commit();
@@ -131,46 +127,43 @@ export default class AuthService {
         refreshToken,
       };
     } catch (error: any) {
+      await transaction?.rollback();
       throw error;
     }
   };
 
-  static logout = async (refreshToken: string) => {
-    const storedToken = await KeyToken.findOne({
-      where: {
-        refreshToken,
-      },
-    });
-
-    if (!storedToken) {
-      throw new BadRequestError("Invalid refresh token");
-    }
-
-    await storedToken.destroy();
+  static logout = async (userId: number) => {
+    await redisConnection.del(`refreshToken:${userId}`);
   };
 
-  static refreshAccessToken = async (refreshToken: string) => {
-    const storedToken = await KeyToken.findOne({
-      where: {
-        refreshToken,
-      },
-    });
+  static refreshAccessToken = async (userId: number, refreshToken: string) => {
+    const storedToken = await redisConnection.get(`refreshToken:${userId}`);
 
     if (!storedToken) {
-      throw new NotFoundError("Invalid refresh token");
+      throw new UnauthorizedError("No valid session found");
     }
 
-    const user = await User.findByPk(storedToken.userId);
+    const isTokenValid = await AuthUtils.compare(refreshToken, storedToken);
 
-    if (!user) {
-      throw new NotFoundError("User not found");
+    if (!isTokenValid) {
+      await redisConnection.del(`refreshToken:${userId}`);
+      throw new SecurityBreachError(
+        "Refresh token reuse detected. Your session has been revoked."
+      );
+    }
+
+    const decoded = await AuthUtils.verifyRefreshToken(refreshToken);
+
+    if (!decoded) {
+      throw new UnauthorizedError("Invalid refresh token");
     }
 
     const accessToken = await AuthUtils.generateAccessToken({
-      id: user.id,
-      email: user.email,
+      id: userId,
     });
 
-    return accessToken;
+    return {
+      accessToken,
+    };
   };
 }

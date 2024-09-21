@@ -12,6 +12,6 @@ router.use("/v1/auth", authRouter);
 router.use("/v1/users", usersRouter);
 router.use("/v1/products", productsRouter);
 router.use("/v1/orders", ordersRouter);
-router.use("/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+router.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export { router as appRouter };

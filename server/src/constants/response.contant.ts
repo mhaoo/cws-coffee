@@ -55,6 +55,7 @@ interface HttpStatusMessages {
   UNSUPPORTED_MEDIA_TYPE: string;
   USE_PROXY: string;
   MISDIRECTED_REQUEST: string;
+  SECURITY_BREACH: string;
 }
 
 export const HttpStatusMessages: HttpStatusMessages = {
@@ -114,4 +115,5 @@ export const HttpStatusMessages: HttpStatusMessages = {
   UNSUPPORTED_MEDIA_TYPE: "Unsupported Media Type",
   USE_PROXY: "Use Proxy",
   MISDIRECTED_REQUEST: "Misdirected Request",
+  SECURITY_BREACH: "Security Breach Detected",
 };

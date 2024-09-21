@@ -30,10 +30,7 @@ passport.use(
           return done(null, false, { message: "User not found" });
         }
 
-        const isValid = await AuthUtils.comparePasswords(
-          password,
-          user.password
-        );
+        const isValid = await AuthUtils.compare(password, user.password);
 
         if (!isValid) {
           return done(null, false, { message: "Invalid password" });

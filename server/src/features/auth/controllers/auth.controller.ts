@@ -39,13 +39,13 @@ class AuthController {
   };
 
   logout = async (req: Request, res: Response) => {
-    const { refreshToken } = req.body;
+    const { userId } = req;
 
-    if (!refreshToken) {
-      throw new UnauthorizedError("Refresh token is required");
+    if (!userId) {
+      throw new UnauthorizedError("User ID is required");
     }
 
-    await AuthService.logout(refreshToken);
+    await AuthService.logout(userId);
 
     new OkSuccess({
       message: "User logged out successfully",
@@ -53,13 +53,18 @@ class AuthController {
   };
 
   refreshToken = async (req: Request, res: Response) => {
+    const { userId } = req;
     const { refreshToken } = req.body;
+
+    if (!userId) {
+      throw new UnauthorizedError("User ID is required");
+    }
 
     if (!refreshToken) {
       throw new UnauthorizedError("Refresh token is required");
     }
 
-    const tokens = await AuthService.refreshAccessToken(refreshToken);
+    const tokens = await AuthService.refreshAccessToken(userId, refreshToken);
 
     new OkSuccess({
       message: "Token refreshed successfully",

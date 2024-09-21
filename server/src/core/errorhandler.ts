@@ -87,4 +87,13 @@ export class InternalServerError extends AppError {
   }
 }
 
+export class SecurityBreachError extends AppError {
+  constructor(
+    message = HttpStatusMessages.SECURITY_BREACH,
+    statusCode = HttpStatusCodes.UNAUTHORIZED
+  ) {
+    super(statusCode, message);
+  }
+}
+
 export default GlobalErrorHandler;

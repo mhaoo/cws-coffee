@@ -6,6 +6,7 @@ import GlobalErrorHandler, {
   NotFoundError,
   ConflictError,
   InternalServerError,
+  SecurityBreachError,
 } from "./errorhandler";
 
 export {
@@ -17,6 +18,7 @@ export {
   NotFoundError,
   ConflictError,
   InternalServerError,
+  SecurityBreachError,
 };
 
 import {

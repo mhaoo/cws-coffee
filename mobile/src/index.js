@@ -7,62 +7,58 @@ import * as Keychain from "react-native-keychain";
 import Login from "./screens/general/login/login";
 import Home from "./screens/general/home/home";
 
-// export default function App() {
-//   return (
-//     <AuthProvider>
-//       <AxiosProvider>
-//         <NavigationContainer>
-//           <StatusBar
-//             barStyle={"dark-content"}
-//             translucent
-//             backgroundColor="transparent"
-//           />
-//           <StackNavigator />
-//         </NavigationContainer>
-//       </AxiosProvider>
-//     </AuthProvider>
-//   );
-// }
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StatusBar
+        barStyle={"dark-content"}
+        translucent
+        backgroundColor="transparent"
+      />
+      <StackNavigator />
+    </NavigationContainer>
+  );
+}
 
-const App = () => {
-  const authContext = useContext(AuthContext);
-  const [status, setStatus] = useState("loading");
+// const App = () => {
+//   const authContext = useContext(AuthContext);
+//   const [status, setStatus] = useState("loading");
 
-  const loadJWT = useCallback(async () => {
-    try {
-      const value = await Keychain.getGenericPassword();
-      const jwt = JSON.parse(value.password);
+//   const loadJWT = useCallback(async () => {
+//     try {
+//       const value = await Keychain.getGenericPassword();
+//       const jwt = JSON.parse(value.password);
 
-      authContext.setAuthState({
-        accessToken: jwt.accessToken || null,
-        refreshToken: jwt.refreshToken || null,
-        authenticated: jwt.accessToken !== null,
-      });
-      setStatus("success");
-    } catch (error) {
-      setStatus("error");
-      console.log(`Keychain Error: ${error.message}`);
-      authContext.setAuthState({
-        accessToken: null,
-        refreshToken: null,
-        authenticated: false,
-      });
-    }
-  }, []);
+//       authContext.setAuthState({
+//         accessToken: jwt.accessToken || null,
+//         refreshToken: jwt.refreshToken || null,
+//         authenticated: jwt.accessToken !== null,
+//       });
+//       setStatus("success");
+//     } catch (error) {
+//       setStatus("error");
+//       console.log(`Keychain Error: ${error.message}`);
+//       authContext.setAuthState({
+//         accessToken: null,
+//         refreshToken: null,
+//         authenticated: false,
+//       });
+//     }
+//   }, []);
 
-  useEffect(() => {
-    loadJWT();
-  }, [loadJWT]);
+//   useEffect(() => {
+//     loadJWT();
+//   }, [loadJWT]);
 
-  // if (status === "loading") {
-  //   return "Loading";
-  // }
+//   // if (status === "loading") {
+//   //   return "Loading";
+//   // }
 
-  if (authContext?.authState?.authenticated === false) {
-    return <Login />;
-  } else {
-    return <Home />;
-  }
-};
+//   if (authContext?.authState?.authenticated === false) {
+//     return <Login />;
+//   } else {
+//     return <Home />;
+//   }
+// };
 
-export default App;
+// export default App;

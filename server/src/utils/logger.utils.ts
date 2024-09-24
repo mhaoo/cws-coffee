@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import winston from "winston";
 import "winston-daily-rotate-file";
-import config from "../configs";
+import config from "@/configs";
 
 const { level: logLevel } = config.logger;
 

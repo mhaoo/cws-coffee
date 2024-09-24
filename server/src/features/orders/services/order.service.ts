@@ -1,9 +1,9 @@
-import { appConnection, BadRequestError, NotFoundError } from "../../../core";
-import { Option, OptionValue, Product } from "../../products/models";
-import { User } from "../../users/models";
+import { appConnection, BadRequestError, NotFoundError } from "@/core";
+import { Option, OptionValue, Product } from "@/features/products/models";
+import { User } from "@/features/users/models";
 import { CreateOrderDTO, OrderStatusEnum } from "../dto/order.dto";
 import { Order, OrderItem } from "../models";
-import { OrderStatus } from "../models/orderStatus.model";
+import { OrderStatus } from "../models";
 
 export default class OrderService {
   static async placeOrder(creatOrderDTO: CreateOrderDTO, userId: number) {

@@ -1,7 +1,7 @@
 import { Model, Column, Table, DataType, HasMany } from "sequelize-typescript";
 import { Product } from "./product.model";
-import { defaultCategories } from "../../../constants/initData";
-import { logger } from "../../../utils";
+import { defaultCategories } from "@/constants/initData";
+import { logger } from "@/utils";
 
 @Table({
   tableName: "categories",

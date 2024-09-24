@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CategoryDTO } from "../dto/products.dto";
 import CategoryService from "../services/category.service";
-import { CreatedSuccess, OkSuccess } from "../../../core";
+import { CreatedSuccess, OkSuccess } from "@/core";
 
 class CategoryController {
   createCategory = async (req: Request, res: Response) => {

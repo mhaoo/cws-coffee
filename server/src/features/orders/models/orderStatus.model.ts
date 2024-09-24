@@ -1,6 +1,6 @@
 import { Model, Column, DataType, Table } from "sequelize-typescript";
-import { defaultOrderStatuses } from "../../../constants/initData";
-import { logger } from "../../../utils";
+import { defaultOrderStatuses } from "@/constants/initData";
+import { logger } from "@/utils";
 
 @Table({
   tableName: "order_statuses",

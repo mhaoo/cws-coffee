@@ -1,5 +1,5 @@
-import { OrderItem } from "../../orders/models/orderItem.model";
-import { Order } from "../../orders/models/order.model";
+import { OrderItem } from "./orderItem.model";
+import { Order } from "./order.model";
 import { OrderStatus } from "./orderStatus.model";
 
 export { Order, OrderItem, OrderStatus };

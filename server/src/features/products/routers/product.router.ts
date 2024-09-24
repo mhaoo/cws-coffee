@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { categoryController, productController } from "../controllers";
-import { handleAsync } from "../../../utils";
+import { handleAsync } from "@/utils";
 
 const router: Router = Router();
 

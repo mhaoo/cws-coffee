@@ -7,7 +7,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { User } from "../../users/models";
+import { User } from "@/features/users/models";
 import { OrderItem } from "./orderItem.model";
 import { OrderStatus } from "./orderStatus.model";
 

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { authRouter } from "../features/auth/router/auth.router";
-import { usersRouter } from "../features/users/routers/user.router";
-import { productsRouter } from "../features/products/routers/product.router";
-import { ordersRouter } from "../features/orders/routers/order.router";
+import { authRouter } from "@/features/auth/router/auth.router";
+import { usersRouter } from "@/features/users/routers/user.router";
+import { productsRouter } from "@/features/products/routers/product.router";
+import { ordersRouter } from "@/features/orders/routers/order.router";
 import * as swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "../configs";
+import { swaggerSpec } from "@/configs";
 
 const router: Router = Router();
 

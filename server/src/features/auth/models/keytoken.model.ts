@@ -7,7 +7,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { User } from "../../users/models/user.model";
+import { User } from "@/features/users/models";
 
 @Table({
   tableName: "key_tokens",

@@ -1,8 +1,8 @@
-import { partialProductSchema, productSchema } from "./../dto/products.dto";
+import { partialProductSchema, productSchema } from "../dto/products.dto";
 import { Request, Response } from "express";
 import ProductService from "../services/product.service";
 import { productListSchema } from "../dto/products.dto";
-import { BadRequestError, CreatedSuccess, OkSuccess } from "../../../core";
+import { BadRequestError, CreatedSuccess, OkSuccess } from "@/core";
 
 class ProductController {
   createProducts = async (req: Request, res: Response) => {

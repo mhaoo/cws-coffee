@@ -1,17 +1,17 @@
-import config from "../../../configs";
-import ms from "ms";
 import * as bcrypt from "bcrypt";
-import { User } from "../../users/models";
-import { AuthUtils, getObjectFields } from "../../../utils";
+import ms from "ms";
+import config from "@/configs";
+import redisConnection from "@/init/redis.init";
+import { User } from "@/features/users/models";
+import { AuthUtils, getObjectFields } from "@/utils";
+import { RoleType } from "@/features/users/dto";
 import {
   BadRequestError,
   ConflictError,
   NotFoundError,
   SecurityBreachError,
   UnauthorizedError,
-} from "../../../core";
-import { RoleType } from "../../users/dto";
-import redisConnection from "../../../init/redis.init";
+} from "@/core";
 
 const { refreshTokenExpiry } = config.security;
 

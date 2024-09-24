@@ -1,10 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
-import config from "../configs";
-import { productModels } from "../features/products/models/index";
-import { userModels } from "../features/users/models";
-import { authModels } from "../features/auth/models";
-import { orderModels } from "../features/orders/models";
-import { logger } from "../utils";
+import config from "@/configs";
+import { productModels } from "@/features/products/models/index";
+import { userModels } from "@/features/users/models";
+import { authModels } from "@/features/auth/models";
+import { orderModels } from "@/features/orders/models";
+import { logger } from "@/utils";
+import { InternalServerError } from "@/core";
 
 const { database, dialect, username, password, host, port } = config.postgres;
 
@@ -38,7 +39,7 @@ export async function initSequelize() {
     await productModels.Product.insertDefaultProducts();
     await orderModels.OrderStatus.insertDefaultOrderStatuses();
   } catch (error) {
-    throw error;
+    throw new InternalServerError("Failed to connect to database");
   }
 
   return appConnection;

@@ -1,8 +1,8 @@
 // models/user.model.ts
 import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
 import { User } from "./user.model";
-import { defaultRoles } from "../../../constants/initData";
-import { logger } from "../../../utils";
+import { logger } from "@/utils";
+import { defaultRoles } from "@/constants/initData";
 
 @Table({
   tableName: "roles",

@@ -9,10 +9,9 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { KeyToken } from "../../auth/models/keytoken.model";
+import { KeyToken } from "@/features/auth/models/keytoken.model";
 import { Role } from "./role.model";
-import { RoleType } from "../dto";
-import { Order } from "../../orders/models";
+import { Order } from "@/features/orders/models";
 
 @Table({
   tableName: "users",

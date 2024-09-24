@@ -5,7 +5,7 @@ import {
   CreatedSuccess,
   OkSuccess,
   UnauthorizedError,
-} from "../../../core";
+} from "@/core";
 
 class AuthController {
   registerWithEmail = async (req: Request, res: Response) => {

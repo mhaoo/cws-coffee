@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import * as Sentry from "@sentry/node";
 import { HttpStatusCodes, HttpStatusMessages } from "../constants";
 import { logger } from "../utils";
+import config from "../configs";
+
+const { env } = config.app;
 
 class GlobalErrorHandler {
   static handleError(
@@ -13,6 +17,10 @@ class GlobalErrorHandler {
       error.statusCode || HttpStatusCodes.INTERNAL_SERVER_ERROR;
     const message = error.message || HttpStatusMessages.INTERNAL_SERVER_ERROR;
     logger.error(`[Error] ${message}`, error);
+
+    if (env === "production") {
+      Sentry.captureException(error);
+    }
 
     res.status(statusCode).json({
       status: "error",

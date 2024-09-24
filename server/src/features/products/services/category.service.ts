@@ -1,4 +1,4 @@
-import { BadRequestError } from "../../../core";
+import { BadRequestError } from "@/core";
 import { CategoryDTO } from "../dto/products.dto";
 import { Category } from "../models";
 

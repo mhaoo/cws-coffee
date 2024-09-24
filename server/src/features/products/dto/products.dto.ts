@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { QueryParams } from "../../../constants";
+import { QueryParams } from "@/constants";
 
 export const productOptionValueSchema = z.object({
   value: z.string({

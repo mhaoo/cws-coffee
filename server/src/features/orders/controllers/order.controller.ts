@@ -4,7 +4,7 @@ import {
   CreatedSuccess,
   ForbiddenError,
   OkSuccess,
-} from "../../../core";
+} from "@/core";
 import OrderService from "../services/order.service";
 
 class OrderController {

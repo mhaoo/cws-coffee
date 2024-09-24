@@ -1,5 +1,5 @@
 import { User } from "../models";
-import { BadRequestError } from "../../../core";
+import { BadRequestError } from "@/core";
 
 export default class UserService {
   static getUserById = async (id: string) => {

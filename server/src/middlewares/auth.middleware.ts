@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { AuthUtils } from "../utils";
-import { UnauthorizedError } from "../core";
+import { AuthUtils } from "@/utils";
+import { UnauthorizedError } from "@/core";
 
 class AuthMiddleWare {
   static checkAuth = async (

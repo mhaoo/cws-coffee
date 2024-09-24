@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { handleAsync } from "../../../utils";
 import authController from "../controllers/auth.controller";
-import AuthMiddleWare from "../../../middlewares/auth.middleware";
+import { AuthMiddleWare } from "@/middlewares";
+import { handleAsync } from "@/utils";
 
 const router: Router = Router();
 

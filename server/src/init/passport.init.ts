@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import { User } from "../features/users/models";
-import { AuthUtils } from "../utils";
+import { User } from "@/features/users/models";
+import { AuthUtils } from "@/utils";
 
 passport.serializeUser((user: any, done) => {
   done(null, user.id);

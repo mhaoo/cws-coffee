@@ -7,12 +7,11 @@ import {
   ForeignKey,
   BelongsTo,
 } from "sequelize-typescript";
-import { Variant } from "./variant.model";
 import { Category } from "./category.model";
 import { Option } from "./option.model";
-import { defaultProducts } from "../../../constants/initData";
+import { defaultProducts } from "@/constants/initData";
 import ProductService from "../services/product.service";
-import { logger } from "../../../utils";
+import { logger } from "@/utils";
 
 @Table({
   tableName: "products",

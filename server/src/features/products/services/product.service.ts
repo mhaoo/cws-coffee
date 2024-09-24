@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { appConnection, BadRequestError, NotFoundError } from "../../../core";
+import { appConnection, BadRequestError, NotFoundError } from "@/core";
 import {
   CreateProductDTO,
   partialProductSchema,

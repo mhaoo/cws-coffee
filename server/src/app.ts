@@ -2,12 +2,12 @@ import express, { Express } from "express";
 import "module-alias/register";
 import helmet from "helmet";
 import cors from "cors";
+import morgan from "morgan";
+import initSentry from "./init/sentry.init";
 import { GlobalErrorHandler } from "./core";
 import { initSequelize } from "./init/postgres.init";
 import { appRouter } from "./init/router.init";
-import morgan from "morgan";
 import { logger } from "./utils";
-import initSentry from "./init/sentry.init";
 
 const app: Express = express();
 

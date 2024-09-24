@@ -21,7 +21,7 @@ function createLogDirectory() {
 const logDir = createLogDirectory();
 
 const logger = winston.createLogger({
-  level: "info",
+  level: logLevel,
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),

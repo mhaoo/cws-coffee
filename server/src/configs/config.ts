@@ -12,11 +12,13 @@ const config = {
   },
   postgres: {
     database: process.env.DEV_POSTGRES_DATABASE || "",
-    dialect: (process.env.DEV_POSTGRES_DIALECT as any) || "postgres", // Specify the dialect type
+    dialect: (process.env.DEV_POSTGRES_DIALECT as any) || "postgres",
     username: process.env.DEV_POSTGRES_USERNAME || "",
     password: process.env.DEV_POSTGRES_PASSWORD || "",
     host: process.env.DEV_POSTGRES_HOST || "localhost",
-    port: parseInt(process.env.DEV_POSTGRES_DB_PORT || "5432", 10), // Ensure port is a number
+    port: Number.isNaN(parseInt(process.env.DEV_POSTGRES_PORT || "5432", 10))
+      ? 5432
+      : parseInt(process.env.DEV_POSTGRES_PORT || "5432", 10),
   },
   redis: {
     host: process.env.DEV_REDIS_HOST || "localhost",
@@ -30,7 +32,9 @@ const config = {
     refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET || "",
     accessTokenExpiry: process.env.ACCESS_TOKEN_EXPIRY || "15m",
     refreshTokenExpiry: process.env.REFRESH_TOKEN_EXPIRY || "30d",
-    saltRounds: parseInt(process.env.SALT_ROUNDS || "10", 10),
+    saltRounds: Number.isNaN(parseInt(process.env.SALT_ROUNDS || "10", 10))
+      ? 10
+      : parseInt(process.env.SALT_ROUNDS || "10", 10),
   },
 };
 

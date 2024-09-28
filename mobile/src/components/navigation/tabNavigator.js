@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from "react";
-import { Dimensions, StyleSheet, Platform } from "react-native";
+import { React } from "react";
+import { StyleSheet, Platform } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -12,8 +12,6 @@ import others from "../../screens/general/others/others";
 import ProductHeader from "../header/productHeader";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-// const screenWidth = Dimensions.get("screen").width;
 
 const Tab = createBottomTabNavigator();
 

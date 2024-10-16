@@ -13,11 +13,7 @@ import {
 const { width, height } = Dimensions.get("screen");
 
 export default SeatBooking = function ({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <Text> This is Seat screen</Text>
-    </View>
-  );
+  return <View style={styles.container}></View>;
 };
 
 const styles = StyleSheet.create({

@@ -12,8 +12,9 @@ import {
   TouchableOpacity,
   ScrollView,
   PixelRatio,
+  ImageBackground,
 } from "react-native";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+// import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 
@@ -87,9 +88,18 @@ const data = [
   { id: "7", category: "Cold Brew", title: "Item 1" },
 ];
 
+const data2 = [
+  {
+    id: "1",
+    category: "Ca phe sua",
+    title: "Item 1",
+    uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lat9Ryng1UhE-3c5u7O-ZFCVXYGoANxWrw&s",
+  },
+];
+
 export default Product = function ({ navigation }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const bottomSheetRef = useRef(null);
+  // const [isVisible, setIsVisible] = useState(false);
+  // const bottomSheetRef = useRef(null);
 
   const groupedData = data.reduce((acc, item) => {
     if (!acc[item.category]) {
@@ -158,31 +168,27 @@ export default Product = function ({ navigation }) {
     </View>
   );
 
-  const renderProductDetail = ({ item }) => (
-    <View>
-      <View style={styles.imageBox}>
-        <Image
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lat9Ryng1UhE-3c5u7O-ZFCVXYGoANxWrw&s",
-          }}
-          style={styles.image}
-        />
-      </View>
-      <Text>Name</Text>
-      <Text>Price</Text>
-      <Text>Description</Text>
-    </View>
-  );
+  // const renderProductDetail = ({ item }) => (
+  //   <View style={styles.innerBottomSheetContainer}>
+  //     <ImageBackground
+  //       source={{
+  //         uri: item.uri,
+  //       }}
+  //       resizeMode="cover"
+  //       style={styles.productImage}
+  //     ></ImageBackground>
+  //   </View>
+  // );
 
   const handleProductPress = () => {
-    setIsVisible(true);
+    navigation.navigate("ProductDetail");
   };
 
-  const handleSheetChanges = useCallback((index) => {
-    if (index === -1) {
-      setIsVisible(false); // Hide BottomSheet when fully collapsed
-    }
-  }, []);
+  // const handleSheetChanges = useCallback((index) => {
+  //   if (index === -1) {
+  //     setIsVisible(false); // Hide BottomSheet when fully collapsed
+  //   }
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -223,19 +229,23 @@ export default Product = function ({ navigation }) {
         />
       </View>
 
-      {isVisible && (
+      {/* {isVisible && (
         <BottomSheet
           ref={bottomSheetRef}
           onChange={handleSheetChanges}
-          snapPoints={["100%"]}
+          snapPoints={["80%"]}
           handleIndicatorStyle={styles.headerIndicator} // use for hide indicator on header
           enablePanDownToClose={true}
         >
           <BottomSheetView style={styles.bottomSheetContainer}>
-            <FlatList data={data} renderItem={renderProductDetail} />
+            <FlatList
+              data={data2}
+              renderItem={renderProductDetail}
+              keyExtractor={(item) => item.id}
+            />
           </BottomSheetView>
         </BottomSheet>
-      )}
+      )} */}
     </View>
   );
 };
@@ -363,11 +373,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#93540A",
   },
-  bottomSheetContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-  headerIndicator: {
-    height: 0,
-  },
+  // bottomSheetContainer: {
+  //   flex: 1,
+  //   alignItems: "center",
+  // },
+  // headerIndicator: {
+  //   height: 0,
+  // },
 });

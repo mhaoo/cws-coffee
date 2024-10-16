@@ -5,6 +5,8 @@ import BasicHeader from "../header/basicHeader";
 import HomeHeader from "../header/homeHeader";
 import home from "../../screens/general/home/home";
 import BottomTabNavigator from "./tabNavigator";
+import productDetail from "../../screens/general/product/productDetail";
+import ProductDetailHeader from "../header/productDetailHeader";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +28,13 @@ const StackNavigator = () => {
       <Stack.Screen
         name="Home"
         component={BottomTabNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ProductDetail"
+        component={productDetail}
         options={{
           headerShown: false,
         }}

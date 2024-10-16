@@ -10,6 +10,7 @@ import rank from "../../screens/general/rank/rank";
 import others from "../../screens/general/others/others";
 
 import ProductHeader from "../header/productHeader";
+import SeatBookingHeader from "../header/seatBookingHeader";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -65,6 +66,9 @@ const BottomTabNavigator = () => {
         name="Đặt chỗ"
         component={seatBooking}
         options={{
+          header: ({ navigation }) => (
+            <SeatBookingHeader navigation={navigation} />
+          ),
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
               name="seat-outline"

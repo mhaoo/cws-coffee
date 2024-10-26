@@ -13,6 +13,7 @@
     "@gorhom/bottom-sheet": "^4.6.4",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/checkbox": "^0.5.17",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-firebase/app": "^20.4.0",
     "@react-native-firebase/auth": "^20.4.0",
     "@react-native-firebase/crashlytics": "^20.4.0",
@@ -28,10 +29,12 @@
     "expo-secure-store": "^13.0.2",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.13.1",
+    "intl": "^1.2.5",
     "jwt-decode": "^4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-keychain": "^8.2.0",
     "react-native-otp-textinput": "^1.1.6",
@@ -41,7 +44,8 @@
     "react-native-screens": "3.31.1",
     "react-native-vector-icons": "^10.1.0",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "13.8.6"
+    "react-native-webview": "13.8.6",
+    "react-native-week-view": "^0.30.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

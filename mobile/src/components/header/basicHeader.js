@@ -14,13 +14,13 @@ import Feather from "react-native-vector-icons/Feather";
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
-export default BasicHeader = function ({ navigation }) {
+export default BasicHeader = function ({ navigation, route }) {
   return (
     <SafeAreaView style={styles.headerContainer}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Feather name="chevron-left" size={28} style={styles.icon} />
       </TouchableOpacity>
-      <Text style={styles.headerText}>Tạo tài khoản</Text>
+      <Text style={styles.headerText}>{route.name}</Text>
     </SafeAreaView>
   );
 };

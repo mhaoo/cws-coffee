@@ -19,11 +19,15 @@ const headerHeightAndroid = PixelRatio.getPixelSizeForLayoutSize(64);
 const headerHeightIOS = PixelRatio.getPixelSizeForLayoutSize(64);
 
 export default SeatBookingHeader = function ({ navigation }) {
+  const handleCardPress = () => {
+    navigation.navigate("Giỏ hàng");
+  };
+
   return (
     <SafeAreaView style={styles.headerContainer}>
       <View style={styles.upperHeader}>
         <Text style={styles.headerText}>Đặt chỗ</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleCardPress}>
           <FontAwesome5 name="shopping-cart" size={28} style={styles.icon} />
         </TouchableOpacity>
       </View>

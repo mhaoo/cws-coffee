@@ -1,3 +1,6 @@
+// import "intl";
+// import "intl/locale-data/jsonp/vi";
+
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";

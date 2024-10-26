@@ -7,6 +7,10 @@ import home from "../../screens/general/home/home";
 import BottomTabNavigator from "./tabNavigator";
 import productDetail from "../../screens/general/product/productDetail";
 import ProductDetailHeader from "../header/productDetailHeader";
+import seatList from "../../screens/general/seatBooking/seatList";
+import SeatListHeader from "../header/seatListHeader";
+import seatDetail from "../../screens/general/seatBooking/seatDetail";
+import cart from "../../screens/general/cart/cart";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +26,9 @@ const StackNavigator = () => {
         name="Register"
         component={register}
         options={{
-          header: ({ navigation }) => <BasicHeader navigation={navigation} />,
+          header: ({ navigation, route }) => (
+            <BasicHeader navigation={navigation} route={route} />
+          ),
         }}
       />
       <Stack.Screen
@@ -37,6 +43,31 @@ const StackNavigator = () => {
         component={productDetail}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="SeatList"
+        component={seatList}
+        options={{
+          header: ({ navigation }) => (
+            <SeatListHeader navigation={navigation} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="SeatDetail"
+        component={seatDetail}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Giỏ hàng"
+        component={cart}
+        options={{
+          header: ({ navigation, route }) => (
+            <BasicHeader navigation={navigation} route={route} />
+          ),
         }}
       />
     </Stack.Navigator>

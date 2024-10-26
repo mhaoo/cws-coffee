@@ -37,8 +37,25 @@ const sections = [
 ];
 
 export default Others = function ({ navigation }) {
+  const handleOrderHistoryPress = () => {
+    navigation.navigate("Đơn hàng của tôi");
+  };
+
+  const handleUserInformationPress = () => {
+    navigation.navigate("Thông tin cá nhân");
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity
+      style={styles.item}
+      onPress={() => {
+        if (item.title === "Đơn hàng của tôi") {
+          handleOrderHistoryPress();
+        } else if (item.title === "Thông tin cá nhân") {
+          handleUserInformationPress();
+        }
+      }}
+    >
       <View style={styles.iconContainer}>
         <Icon name={item.icon} size={24} color="#333" />
       </View>

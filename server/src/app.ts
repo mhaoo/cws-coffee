@@ -12,7 +12,6 @@ import { logger } from "./utils";
 const app: Express = express();
 
 initSequelize();
-initSentry();
 
 app.use(cors());
 app.use(helmet());

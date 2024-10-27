@@ -18,10 +18,6 @@ class GlobalErrorHandler {
     const message = error.message || HttpStatusMessages.INTERNAL_SERVER_ERROR;
     logger.error(`[Error] ${message}`, error);
 
-    if (env === "production") {
-      Sentry.captureException(error);
-    }
-
     res.status(statusCode).json({
       status: "error",
       statusCode,

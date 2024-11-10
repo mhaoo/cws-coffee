@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   SafeAreaView,
@@ -13,10 +13,11 @@ import {
   ScrollView,
   PixelRatio,
   ImageBackground,
+  Alert,
 } from "react-native";
-// import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
+import axios from "axios";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -53,7 +54,7 @@ const categoryData = [
   },
   {
     id: "7",
-    name: "VA is the best lmao",
+    name: "Coffee sua da pha loang",
     uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lat9Ryng1UhE-3c5u7O-ZFCVXYGoANxWrw&s",
   },
   {
@@ -78,16 +79,6 @@ const categoryData = [
   },
 ];
 
-const data = [
-  { id: "1", category: "Ca phe sua", title: "Item 1" },
-  { id: "2", category: "Ca phe sua", title: "Item 2" },
-  { id: "3", category: "Ca phe den da", title: "Item 1" },
-  { id: "4", category: "Tra", title: "Item 1" },
-  { id: "5", category: "Bac xiu", title: "Item 1" },
-  { id: "6", category: "Capuchino", title: "Item 1" },
-  { id: "7", category: "Cold Brew", title: "Item 1" },
-];
-
 const data2 = [
   {
     id: "1",
@@ -98,24 +89,49 @@ const data2 = [
 ];
 
 export default Product = function ({ navigation }) {
-  // const [isVisible, setIsVisible] = useState(false);
-  // const bottomSheetRef = useRef(null);
+  const [groupedDataArray, setGroupedDataArray] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const groupedData = data.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = [];
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://192.168.2.63:3000/v1/products");
+      const products = response.data.data.rows;
+
+      // Nhóm các sản phẩm theo danh mục
+      const groupedData = products.reduce((acc, product) => {
+        const category = product.category.name;
+        if (!acc[category]) {
+          acc[category] = [];
+        }
+        acc[category].push({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+        });
+        return acc;
+      }, {});
+
+      // Chuyển đổi thành mảng để render bằng FlatList
+      const groupedArray = Object.entries(groupedData).map(
+        ([category, items]) => ({
+          category,
+          data: items,
+        })
+      );
+
+      setGroupedDataArray(groupedArray);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Lỗi", "Không thể lấy dữ liệu sản phẩm.");
+      setLoading(false);
     }
-    acc[item.category].push(item);
-    return acc;
-  }, {});
-
-  // Chuyển object groupedData thành mảng để render bằng FlatList
-  const groupedDataArray = Object.entries(groupedData).map(
-    ([category, items]) => ({
-      category,
-      data: items,
-    })
-  );
+  };
 
   const renderCategoryItem = ({ item }) => (
     <View style={styles.categoryItemContainer}>
@@ -142,7 +158,7 @@ export default Product = function ({ navigation }) {
         <TouchableOpacity
           key={product.id}
           style={styles.productContainer}
-          onPress={handleProductPress}
+          onPress={() => handleProductPress(product)}
         >
           <View style={styles.imageBox}>
             <Image
@@ -154,12 +170,12 @@ export default Product = function ({ navigation }) {
           </View>
           <View style={styles.detailBox}>
             <View style={styles.productTextContainer}>
-              <Text style={styles.productNameText}>{product.title}</Text>
-              <Text style={styles.productPriceText}>{product.title}</Text>
+              <Text style={styles.productNameText}>{product.name}</Text>
+              <Text style={styles.productPriceText}>{`$${product.price}`}</Text>
             </View>
             <View style={styles.addButtonContainer}>
               <TouchableOpacity style={styles.addButton}>
-                <Ionicons name="add" size={20} color={"white"}></Ionicons>
+                <Ionicons name="add" size={20} color={"white"} />
               </TouchableOpacity>
             </View>
           </View>
@@ -180,9 +196,13 @@ export default Product = function ({ navigation }) {
   //   </View>
   // );
 
-  const handleProductPress = () => {
-    navigation.navigate("ProductDetail");
+  const handleProductPress = (product) => {
+    navigation.navigate("ProductDetail", { productId: product.id });
   };
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
 
   // const handleSheetChanges = useCallback((index) => {
   //   if (index === -1) {

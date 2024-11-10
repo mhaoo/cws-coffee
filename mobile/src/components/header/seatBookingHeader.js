@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
     marginLeft: screenWidth * 0.06,
     marginBottom: screenWidth * 0.04,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     flex: 0.6,
     flexDirection: "row",
-    borderRadius: 10,
+    borderRadius: 8,
     marginHorizontal: 20,
     backgroundColor: "#F1F1F1",
   },

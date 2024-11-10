@@ -20,132 +20,72 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import OTPTextView from "react-native-otp-textinput";
+// import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+// import OTPTextView from "react-native-otp-textinput";
 import GeneralButton from "../../../components/button/generalButton";
+import axios from "axios";
 import * as Keychain from "react-native-keychain";
 import { AuthContext } from "../../../api/authContext";
 import { AxiosContext } from "../../../api/providerContext";
-// import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-// import { firebaseConfig } from "../../../config/firebase";
-// import firebase from "firebase/compat/app";
 
 const { width, height } = Dimensions.get("screen");
 
 export default Login = function ({ navigation }) {
   const [isFocusedEmail, setIsFocusedEmail] = useState(false);
-  const [isFocusedPass, setIsFocusedPass] = useState(false); // Doi mau vien cua text input khi nhan vao nhap
+  const [isFocusedPass, setIsFocusedPass] = useState(false);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
-  const bottomSheetRef = useRef(null);
-  const [code, setCode] = useState("");
-  const [verificationId, setVerificationId] = useState(null);
-  const recaptchaVerifier = useRef(null);
 
-  // const authContext = useContext(AuthContext);
-  // const { publicAxios } = useContext(AxiosContext);
-
-  const [isVisible, setIsVisible] = useState(false); // State to control BottomSheet visibility
-
-  const handleLoginPress = () => {
-    // setIsVisible(true); // Show BottomSheet when "Đăng nhập" is pressed
-    // sendVerification();
-    navigation.navigate("Home");
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
-  // const handleLoginPress = async () => {
-  //   try {
-  //     const response = await publicAxios.post("/auth/login/email", {
-  //       email: inputEmail,
-  //       password: inputPass,
-  //     });
+  const handleLoginPress = async () => {
+    // if (!isValidEmail(inputEmail)) {
+    //   Alert.alert("Email không hợp lệ", "Vui lòng nhập đúng định dạng email");
+    //   return;
+    // }
+    // if (checkPasswordValidity(inputPass)) {
+    //   Alert.alert("Mật khẩu không hợp lệ", checkPasswordValidity(inputPass));
+    //   return;
+    // }
+    // try {
+    //   const response = await axios.post(
+    //     "http://192.168.2.63:3000/v1/auth/login/email",
+    //     {
+    //       email: inputEmail,
+    //       password: inputPass,
+    //     }
+    //   );
+    //   const { accessToken, refreshToken } = response.data;
+    //   console.log(response.data);
 
-  //     console.log(response.data);
+    navigation.navigate("Home");
+    // } catch (error) {
+    //   if (
+    //     error.response &&
+    //     error.response.data &&
+    //     error.response.data.message
+    //   ) {
+    //     Alert.alert("Đăng nhập thất bại", error.response.data.message);
+    //   } else {
+    //     Alert.alert("Đăng nhập thất bại", "Có lỗi xảy ra, vui lòng thử lại");
+    //   }
+    // }
+  };
 
-  //     const { accessToken, refreshToken } = response.data;
-  //     authContext.setAuthState({
-  //       accessToken,
-  //       refreshToken,
-  //       authenticated: true,
-  //     });
-
-  //     await Keychain.setGenericPassword(
-  //       "token",
-  //       JSON.stringify({
-  //         accessToken,
-  //         refreshToken,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleRegisterPress = () => {
+    navigation.navigate("Đăng ký");
+  };
 
   const checkPasswordValidity = (value) => {
     const isNonWhiteSpace = /^\S*$/;
     if (!isNonWhiteSpace.test(value)) {
-      return "Password must not contain Whitespaces";
+      return "Mật khẩu không được chứa khoảng trắng";
     }
-
-    // const isContainsUppercase = /^(?=.*[A-Z]).*$/;
-    // if (!isContainsUppercase.test(value)) {
-    //   return 'Password must have at least one Uppercase Character.';
-    // }
-
-    // const isContainsLowercase = /^(?=.*[a-z]).*$/;
-    // if (!isContainsLowercase.test(value)) {
-    //   return 'Password must have at least one Lowercase Character.';
-    // }
-
-    // const isContainsNumber = /^(?=.*[0-9]).*$/;
-    // if (!isContainsNumber.test(value)) {
-    //   return 'Password must contain at least one Digit.';
-    // }
-
-    // const isValidLength = /^.{8,16}$/;
-    // if (!isValidLength.test(value)) {
-    //   return 'Password must be 8-16 Characters Long.';
-    // }
-
-    // const isContainsSymbol =
-    //   /^(?=.*[~`!@#$%^&*()--+={}\[\]|\\:;"'<>,.?/_₹]).*$/;
-    // if (!isContainsSymbol.test(value)) {
-    //   return 'Password must contain at least one Special Symbol.';
-    // }
-
     return null;
   };
-
-  const handleSheetChanges = useCallback((index) => {
-    if (index === -1) {
-      setIsVisible(false); // Hide BottomSheet when fully collapsed
-    }
-  }, []);
-
-  const sendVerification = () => {
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    phoneProvider
-      .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-      .then(setVerificationId);
-  };
-
-  // const confirmCode = () => {
-  //   const credential = firebase.auth.PhoneAuthProvider.credential(
-  //     verificationId,
-  //     code
-  //   );
-  //   firebase
-  //     .auth()
-  //     .signInWithCredential(credential)
-  //     .then(() => {
-  //       setCode("");
-  //       navigation.navigate("Register");
-  //     })
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  //   Alert.alert("Login successful");
-  // };
 
   return (
     <ImageBackground
@@ -168,7 +108,7 @@ export default Login = function ({ navigation }) {
             styles.textInput,
             { borderColor: isFocusedEmail ? "#93540A" : "#A8A8A8" },
           ]}
-          placeholder="Nhập email hoặc số điện thoại"
+          placeholder="Nhập email"
           placeholderTextColor="#A8A8A8"
           onChangeText={setInputEmail}
           value={inputEmail}
@@ -181,7 +121,7 @@ export default Login = function ({ navigation }) {
             styles.textInput,
             { borderColor: isFocusedPass ? "#93540A" : "#A8A8A8" },
           ]}
-          placeholder="Nhập password"
+          placeholder="Nhập mật khẩu"
           placeholderTextColor="#A8A8A8"
           onChangeText={setInputPass}
           value={inputPass}
@@ -191,6 +131,14 @@ export default Login = function ({ navigation }) {
         ></TextInput>
         <View style={styles.loginButtonContainer}>
           <GeneralButton text="Đăng nhập" onPress={handleLoginPress} />
+        </View>
+        <View style={styles.loginButtonContainer}>
+          <GeneralButton
+            text="Đăng ký tài khoản mới"
+            style={styles.registerButton}
+            textStyle={styles.registerButtonText}
+            onPress={handleRegisterPress}
+          />
         </View>
         <View style={styles.horizontalLineContainer}>
           <View style={styles.horizontalLine}></View>
@@ -266,8 +214,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9F9",
   },
   loginButtonContainer: {
-    flex: 0.2,
+    flex: 0.16,
     justifyContent: "center",
+  },
+  registerButton: {
+    borderWidth: 1,
+    borderColor: "#93540A",
+    backgroundColor: "white",
+  },
+  registerButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#93540A",
   },
   horizontalLineContainer: {
     flex: 0.1,

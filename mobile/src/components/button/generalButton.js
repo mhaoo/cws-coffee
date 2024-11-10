@@ -3,10 +3,15 @@ import { Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
 
-const GeneralButton = ({ onPress, text }) => {
+const GeneralButton = ({ onPress, text, style, textStyle }) => {
   return (
-    <TouchableOpacity style={styles.generalButtonContainer} onPress={onPress}>
-      <Text style={styles.generalButtonText}>{text}</Text>
+    <TouchableOpacity
+      style={StyleSheet.compose(styles.generalButtonContainer, style)}
+      onPress={onPress}
+    >
+      <Text style={StyleSheet.compose(styles.generalButtonText, textStyle)}>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };

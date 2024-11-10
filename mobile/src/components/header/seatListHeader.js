@@ -49,18 +49,18 @@ export default SeatListHeader = function ({ navigation }) {
         setOpen={setOpen}
         setValue={handleDropdownChange}
         setItems={setItems}
-        placeholder="Loai phong:"
+        placeholder="Loại phòng:"
         style={{
-          borderRadius: 10,
-          borderWidth: 2.5,
-          borderColor: "rgba(27, 97, 181, 0.89)",
+          borderRadius: 8,
+          borderWidth: 2,
+          borderColor: "#93540A",
         }}
         containerStyle={styles.dropdownContainer}
         dropDownContainerStyle={{
           borderTopWidth: 0,
-          borderRadius: 10,
-          borderWidth: 2.5,
-          borderColor: "rgba(27, 97, 181, 0.89)",
+          borderRadius: 8,
+          borderWidth: 2,
+          borderColor: "#93540A",
         }}
         selectedItemContainerStyle={{
           backgroundColor: "rgba(27, 97, 181, 0.1)",
@@ -70,6 +70,9 @@ export default SeatListHeader = function ({ navigation }) {
           fontSize: 20,
           color: "black",
         }}
+        arrowIconStyle={{
+          tintColor: "#93540A",
+        }}
       />
     </SafeAreaView>
   );
@@ -78,6 +81,7 @@ export default SeatListHeader = function ({ navigation }) {
 const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#F7B75740",
     height: Platform.OS === "android" ? headerHeightAndroid : headerHeightIOS,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
@@ -87,38 +91,37 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     flex: 1,
-    // marginLeft: 10,
-    // marginRight: 5,
+    marginHorizontal: 12,
     // backgroundColor: "white",
   },
-  iconContainer: {
-    flex: 0.2,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.5)",
-  },
-  modalContent: {
-    padding: 16,
-    borderRadius: 10,
-    elevation: 5,
-    width: 0.8 * screenWidth,
-    backgroundColor: "white",
-  },
-  informContainer: {
-    padding: 10,
-    marginVertical: 10,
-    borderRadius: 10,
-    alignItems: "center",
-    backgroundColor: "rgba(27, 97, 181, 0.10)",
-  },
-  label: {
-    fontSize: 20,
-    fontFamily: "Poppins_400Regular",
-    color: "rgba(27, 97, 181, 0.89)",
-  },
+  // iconContainer: {
+  //   flex: 0.2,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
+  // modalContainer: {
+  //   flex: 1,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   backgroundColor: "rgba(0,0,0,0.5)",
+  // },
+  // modalContent: {
+  //   padding: 16,
+  //   borderRadius: 10,
+  //   elevation: 5,
+  //   width: 0.8 * screenWidth,
+  //   backgroundColor: "white",
+  // },
+  // informContainer: {
+  //   padding: 10,
+  //   marginVertical: 10,
+  //   borderRadius: 10,
+  //   alignItems: "center",
+  //   backgroundColor: "rgba(27, 97, 181, 0.10)",
+  // },
+  // label: {
+  //   fontSize: 20,
+  //   fontFamily: "Poppins_400Regular",
+  //   color: "rgba(27, 97, 181, 0.89)",
+  // },
 });

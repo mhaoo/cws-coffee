@@ -5,6 +5,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./components/navigation";
+import { CartProvider } from "./screens/general/cart/cartContext";
 import { AuthContext } from "./api/authContext";
 import * as Keychain from "react-native-keychain";
 import Login from "./screens/general/login/login";
@@ -12,14 +13,16 @@ import Home from "./screens/general/home/home";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar
-        barStyle={"dark-content"}
-        translucent
-        backgroundColor="transparent"
-      />
-      <StackNavigator />
-    </NavigationContainer>
+    <CartProvider>
+      <NavigationContainer>
+        <StatusBar
+          barStyle={"dark-content"}
+          translucent
+          backgroundColor="transparent"
+        />
+        <StackNavigator />
+      </NavigationContainer>
+    </CartProvider>
   );
 }
 

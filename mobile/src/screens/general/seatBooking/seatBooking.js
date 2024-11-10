@@ -75,20 +75,22 @@ const storeData = [
 export default SeatBooking = function ({ navigation }) {
   const renderStoreListContainer = ({ item }) => (
     <TouchableOpacity
-      style={styles.storeDetailContainer}
+      style={styles.storeListContainer}
       onPress={handleStorePress}
     >
-      <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri: item.uri,
-          }}
-          style={styles.image}
-        />
-      </View>
-      <View style={styles.storeDetail}>
-        <Text>{item.basicName}</Text>
-        <Text>{item.branchName}</Text>
+      <View style={styles.storeDetailContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{
+              uri: item.uri,
+            }}
+            style={styles.image}
+          />
+        </View>
+        <View style={styles.storeDetail}>
+          <Text style={styles.basicName}>{item.basicName}</Text>
+          <Text style={styles.branchName}>{item.branchName}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -100,7 +102,6 @@ export default SeatBooking = function ({ navigation }) {
   return (
     <View style={styles.container}>
       <FlatList
-        // contentContainerStyle={styles.renderStoreListContainer}
         data={storeData}
         renderItem={renderStoreListContainer}
         keyExtractor={(item) => item.id}
@@ -118,22 +119,40 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F9F9F9",
   },
+  storeListContainer: {
+    marginHorizontal: 20,
+  },
   storeDetailContainer: {
     flexDirection: "row",
-    paddingBottom: 20,
+    borderRadius: 8,
+    marginBottom: 8,
+    backgroundColor: "#FFFFFF",
   },
   imageContainer: {
-    flex: 0.3,
-    alignItems: "center",
-    backgroundColor: "aqua",
+    padding: PixelRatio.getPixelSizeForLayoutSize(5),
   },
   image: {
-    height: PixelRatio.getPixelSizeForLayoutSize(40),
-    width: PixelRatio.getPixelSizeForLayoutSize(40),
-    borderRadius: PixelRatio.getPixelSizeForLayoutSize(10),
+    height: PixelRatio.getPixelSizeForLayoutSize(30),
+    width: PixelRatio.getPixelSizeForLayoutSize(30),
+    borderRadius: 8,
   },
   storeDetail: {
-    flex: 0.7,
-    backgroundColor: "blue",
+    flex: 1,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginLeft: 20,
+    marginTop: 20,
+    marginBottom: 8,
+  },
+  basicName: {
+    fontSize: 14,
+    fontWeight: "semibold",
+    color: "#A8A8A8",
+    marginVertical: PixelRatio.getPixelSizeForLayoutSize(4),
+  },
+  branchName: {
+    fontSize: 16,
   },
 });

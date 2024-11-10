@@ -17,11 +17,20 @@ const headerHeightAndroid = PixelRatio.getPixelSizeForLayoutSize(36);
 const headerHeightIOS = PixelRatio.getPixelSizeForLayoutSize(36);
 
 export default ProductHeader = function ({ navigation }) {
+  const handleCardPress = () => {
+    navigation.navigate("Giỏ hàng");
+  };
+
   return (
     <SafeAreaView style={styles.headerContainer}>
       <Text style={styles.headerText}>Danh mục</Text>
       <TouchableOpacity>
-        <FontAwesome5 name="shopping-cart" size={28} style={styles.icon} />
+        <FontAwesome5
+          name="shopping-cart"
+          size={28}
+          style={styles.icon}
+          onPress={handleCardPress}
+        />
       </TouchableOpacity>
     </SafeAreaView>
   );

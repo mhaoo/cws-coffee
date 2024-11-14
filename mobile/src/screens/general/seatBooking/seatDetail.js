@@ -1,6 +1,18 @@
 import React, { useState } from "react";
-import { Alert, View, StyleSheet, Dimensions } from "react-native";
+import {
+  Alert,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Text,
+  PixelRatio,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import WeekView from "react-native-week-view";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import GeneralButton from "../../../components/button/generalButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -131,10 +143,64 @@ export default SeatDetail = function ({
     }
   };
 
+  const utilities = [
+    { id: "1", icon: "desk", text: "Bàn cao cấp & ghế công thái học" },
+    { id: "2", icon: "cleaning-services", text: "Vệ sinh hằng ngày" },
+    { id: "3", icon: "directions-car", text: "Miễn phí gửi xe" },
+    { id: "4", icon: "wifi", text: "Wifi tốc độ cao" },
+    { id: "5", icon: "ac-unit", text: "Máy lạnh" },
+    { id: "6", icon: "health-and-safety", text: "Diệt khuẩn bằng UVC" },
+  ];
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}></View>
-      <View style={styles.timeSelectContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.seatInformationContainer}>
+          <View style={styles.seatImageContainer}>
+            <Image
+              source={{
+                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lat9Ryng1UhE-3c5u7O-ZFCVXYGoANxWrw&s",
+              }}
+              style={styles.seatImage}
+            />
+          </View>
+          <View style={styles.seatDescriptionContainer}>
+            <Text style={styles.seatNameText}>Meeting POD 1</Text>
+            <Text style={styles.descriptionText}>
+              Thanh lap tu 2015, CWS Coffee la he thong cac quan ca phe van
+              phong dau tien tai Viet Nam.
+            </Text>
+          </View>
+          <Text style={styles.utilitiesHeaderText}>Tiện ích</Text>
+          <View style={styles.seatUtilities}>
+            {utilities.map((utility, index) => (
+              <View
+                key={utility.id}
+                style={[
+                  styles.utilityItemContainer,
+                  index === utilities.length - 1 && { borderBottomWidth: 0 }, // Xóa border cho mục cuối cùng
+                ]}
+              >
+                <MaterialIcons
+                  name={utility.icon}
+                  size={24}
+                  style={styles.utilityIcon}
+                />
+                <Text style={styles.utilityText}>{utility.text}</Text>
+              </View>
+            ))}
+          </View>
+          <Text style={styles.utilitiesHeaderText}>Lưu ý</Text>
+          <Text style={styles.noteText}>
+            • Chỗ ngồi chỉ được đặt theo slot 60 phút, thời gian đặt chỗ tối
+            thiểu là 60 phút.
+          </Text>
+        </View>
+      </ScrollView>
+      {/* <View style={styles.timeSelectContainer}>
         <WeekView
           events={tempEvent ? [...eventList, tempEvent] : eventList} // Hiển thị sự kiện tạm thời
           selectedDate={selectedDate}
@@ -148,8 +214,28 @@ export default SeatDetail = function ({
           startHour={startHour}
           endHour={endHour}
         />
+      </View> */}
+      <View style={styles.footerContainer}>
+        <View style={styles.footerContent}>
+          <View style={styles.footerInfo}>
+            <Text style={styles.capacityText}>Số lượng tối đa:</Text>
+            <Text style={styles.capacityText}>10</Text>
+          </View>
+          <View style={styles.footerInfo}>
+            <Text style={styles.priceText}>Giá:</Text>
+            <Text style={styles.priceText}>55.000 đ/giờ</Text>
+          </View>
+        </View>
+        <GeneralButton
+          text="Đặt chỗ ngồi"
+          style={styles.footerButton}
+          // textStyle={styles.footerButtonText}
+          // onPress={handleRegisterPress}
+        />
+        <Text style={styles.noteText}>
+          Phí đặt chỗ ngồi sẽ được hoàn trả 100% nếu hủy đặt chỗ trước 24 giờ.
+        </Text>
       </View>
-      <View style={styles.detailContainer}></View>
     </View>
   );
 };
@@ -159,13 +245,82 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F9F9F9",
   },
-  imageContainer: {
-    flex: 0.3,
+  scrollContent: {
+    paddingBottom: 50,
   },
-  timeSelectContainer: {
-    flex: 0.4,
+  seatInformationContainer: {},
+  seatImageContainer: {
+    marginBottom: 12,
   },
-  detailContainer: {
-    flex: 0.3,
+  seatImage: {
+    height: PixelRatio.getPixelSizeForLayoutSize(90),
+    width: width,
   },
+  seatDescriptionContainer: {
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  seatNameText: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: "#A8A8A8",
+  },
+  seatUtilities: {
+    marginHorizontal: 20,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#A8A8A8",
+    marginBottom: 12,
+  },
+  utilitiesHeaderText: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  utilityItemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    borderBottomWidth: 0.5,
+    width: "90%",
+    alignSelf: "center",
+    borderBottomColor: "#A8A8A8",
+  },
+  utilityIcon: {
+    marginRight: 12,
+    color: "#A8A8A8",
+  },
+  utilityText: {
+    fontSize: 14,
+    color: "#A8A8A8",
+  },
+  noteText: {
+    fontSize: 14,
+    color: "#A8A8A8",
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  footerContainer: {
+    borderTopWidth: 0.25,
+    borderTopColor: "#A8A8A8",
+    backgroundColor: "#FFFFFF",
+  },
+  footerContent: {
+    flexDirection: "row",
+  },
+  footerInfo: {
+    flex: 0.5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 12,
+  },
+  footerButton: {
+    marginBottom: 12,
+  },
+  timeSelectContainer: {},
 });

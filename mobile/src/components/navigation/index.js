@@ -58,10 +58,12 @@ const StackNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="SeatDetail"
+        name="Chi tiết chỗ ngồi"
         component={seatDetail}
         options={{
-          headerShown: false,
+          header: ({ navigation, route }) => (
+            <BasicHeader navigation={navigation} route={route} />
+          ),
         }}
       />
       <Stack.Screen

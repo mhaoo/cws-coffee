@@ -1,15 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
 import {
-  Button,
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
   TextInput,
   Dimensions,
   Alert,
+  TouchableOpacity,
 } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import GeneralButton from "../../../components/button/generalButton";
 
 const { width, height } = Dimensions.get("screen");
@@ -21,6 +21,7 @@ export default Register = function ({ navigation }) {
   const [inputName, setInputName] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -128,19 +129,37 @@ export default Register = function ({ navigation }) {
           onBlur={() => setIsEmailFocused(false)}
           selectionColor={isEmailFocused ? "#93540A" : "#A8A8A8"}
         ></TextInput>
-        <TextInput
+        <View
           style={[
-            styles.textInput,
+            styles.passwordInputContainer,
             { borderColor: isPassFocused ? "#93540A" : "#A8A8A8" },
           ]}
-          placeholder="Nhập mật khẩu của bạn"
-          placeholderTextColor="#A8A8A8"
-          onChangeText={setInputPass}
-          value={inputPass}
-          onFocus={() => setIsPassFocused(true)}
-          onBlur={() => setIsPassFocused(false)}
-          selectionColor={isPassFocused ? "#93540A" : "#A8A8A8"}
-        ></TextInput>
+        >
+          <TextInput
+            style={[
+              styles.passwordInput,
+              { borderColor: isPassFocused ? "#93540A" : "#A8A8A8" },
+            ]}
+            placeholder="Nhập mật khẩu của bạn"
+            placeholderTextColor="#A8A8A8"
+            onChangeText={setInputPass}
+            value={inputPass}
+            secureTextEntry={isPasswordHidden}
+            onFocus={() => setIsPassFocused(true)}
+            onBlur={() => setIsPassFocused(false)}
+            selectionColor={isPassFocused ? "#93540A" : "#A8A8A8"}
+          ></TextInput>
+          <TouchableOpacity
+            onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+          >
+            <MaterialCommunityIcons
+              name={isPasswordHidden ? "eye-outline" : "eye-off-outline"}
+              size={24}
+              color="#A8A8A8"
+              style={styles.hiddenIcon}
+            />
+          </TouchableOpacity>
+        </View>
         <GeneralButton text="Tạo tài khoản" onPress={handleRegisterPress} />
       </View>
     </View>
@@ -164,5 +183,24 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.075,
     marginBottom: width * 0.06,
     backgroundColor: "#F9F9F9",
+  },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: width * 0.075,
+    marginBottom: width * 0.06,
+    backgroundColor: "#F9F9F9",
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 16,
+    height: height * 0.06,
+    paddingLeft: 10,
+  },
+  hiddenIcon: {
+    paddingHorizontal: 5,
   },
 });

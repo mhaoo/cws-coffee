@@ -20,6 +20,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 // import OTPTextView from "react-native-otp-textinput";
 import GeneralButton from "../../../components/button/generalButton";
@@ -35,6 +36,7 @@ export default Login = function ({ navigation }) {
   const [isFocusedPass, setIsFocusedPass] = useState(false);
   const [inputEmail, setInputEmail] = useState("");
   const [inputPass, setInputPass] = useState("");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -98,7 +100,7 @@ export default Login = function ({ navigation }) {
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         style={styles.container}
       > */}
-      <View style={styles.loginContainer}>
+      <View style={styles.contentContainer}>
         <View style={styles.welcomeTextContainer}>
           <Text style={styles.welcomeText}>Chào mừng bạn đến với</Text>
           <Text style={styles.labelText}>COWORKING SPACE COFFEE</Text>
@@ -116,19 +118,39 @@ export default Login = function ({ navigation }) {
           onBlur={() => setIsFocusedEmail(false)}
           selectionColor={isFocusedEmail ? "#93540A" : "#A8A8A8"}
         ></TextInput>
-        <TextInput
+
+        <View
           style={[
-            styles.textInput,
+            styles.passwordInputContainer,
             { borderColor: isFocusedPass ? "#93540A" : "#A8A8A8" },
           ]}
-          placeholder="Nhập mật khẩu"
-          placeholderTextColor="#A8A8A8"
-          onChangeText={setInputPass}
-          value={inputPass}
-          onFocus={() => setIsFocusedPass(true)}
-          onBlur={() => setIsFocusedPass(false)}
-          selectionColor={isFocusedPass ? "#93540A" : "#A8A8A8"}
-        ></TextInput>
+        >
+          <TextInput
+            style={[
+              styles.passwordInput,
+              { borderColor: isFocusedPass ? "#93540A" : "#A8A8A8" },
+            ]}
+            placeholder="Nhập mật khẩu"
+            placeholderTextColor="#A8A8A8"
+            onChangeText={setInputPass}
+            value={inputPass}
+            secureTextEntry={isPasswordHidden}
+            onFocus={() => setIsFocusedPass(true)}
+            onBlur={() => setIsFocusedPass(false)}
+            selectionColor={isFocusedPass ? "#93540A" : "#A8A8A8"}
+          ></TextInput>
+          <TouchableOpacity
+            onPress={() => setIsPasswordHidden(!isPasswordHidden)}
+          >
+            <MaterialCommunityIcons
+              name={isPasswordHidden ? "eye-outline" : "eye-off-outline"}
+              size={24}
+              color="#A8A8A8"
+              style={styles.hiddenIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.loginButtonContainer}>
           <GeneralButton text="Đăng nhập" onPress={handleLoginPress} />
         </View>
@@ -182,7 +204,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column-reverse",
   },
-  loginContainer: {
+  contentContainer: {
     flex: 0.7,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -212,6 +234,25 @@ const styles = StyleSheet.create({
     marginHorizontal: width * 0.075,
     marginBottom: width * 0.06,
     backgroundColor: "#F9F9F9",
+  },
+  passwordInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    marginHorizontal: width * 0.075,
+    marginBottom: width * 0.06,
+    backgroundColor: "#F9F9F9",
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 16,
+    height: height * 0.06,
+    paddingLeft: 10,
+  },
+  hiddenIcon: {
+    paddingHorizontal: 5,
   },
   loginButtonContainer: {
     flex: 0.16,

@@ -18,7 +18,7 @@ const GeneralButton = ({ onPress, text, style, textStyle }) => {
 
 const styles = StyleSheet.create({
   generalButtonContainer: {
-    borderRadius: 10,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     height: height * 0.06,

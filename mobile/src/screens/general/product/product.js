@@ -18,6 +18,7 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import axios from "axios";
+// import { NetworkInfo } from "react-native-network-info";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -91,6 +92,7 @@ const data2 = [
 export default Product = function ({ navigation }) {
   const [groupedDataArray, setGroupedDataArray] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [localIP, setLocalIP] = useState(null); // Lưu IP cục bộ
 
   useEffect(() => {
     fetchProducts();

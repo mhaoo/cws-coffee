@@ -3,9 +3,12 @@ import { Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
 
-const SecondaryButton = ({ onPress, text, price }) => {
+const SecondaryButton = ({ onPress, text, price, style }) => {
   return (
-    <TouchableOpacity style={styles.secondaryButtonContainer} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.secondaryButtonContainer, style]}
+      onPress={onPress}
+    >
       <Text style={styles.secondaryButtonText}>{text}</Text>
       <Text style={styles.secondaryButtonText}>{price}</Text>
     </TouchableOpacity>
@@ -15,7 +18,7 @@ const SecondaryButton = ({ onPress, text, price }) => {
 const styles = StyleSheet.create({
   secondaryButtonContainer: {
     flexDirection: "row",
-    borderRadius: 10,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
     height: height * 0.06,

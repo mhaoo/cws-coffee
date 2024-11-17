@@ -22,7 +22,8 @@
           "localized": true
         }
       },
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "additional_price": {
       "pluginOptions": {
@@ -30,7 +31,9 @@
           "localized": true
         }
       },
-      "type": "decimal"
+      "type": "decimal",
+      "required": true,
+      "min": 0
     },
     "option": {
       "type": "relation",

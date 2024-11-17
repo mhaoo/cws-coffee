@@ -10,7 +10,6 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import WeekView from "react-native-week-view";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import GeneralButton from "../../../components/button/generalButton";
 
@@ -152,6 +151,10 @@ export default SeatDetail = function ({
     { id: "6", icon: "health-and-safety", text: "Diệt khuẩn bằng UVC" },
   ];
 
+  const handleBookingPress = () => {
+    navigation.navigate("Đặt chỗ ngồi");
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -230,7 +233,7 @@ export default SeatDetail = function ({
           text="Đặt chỗ ngồi"
           style={styles.footerButton}
           // textStyle={styles.footerButtonText}
-          // onPress={handleRegisterPress}
+          onPress={handleBookingPress}
         />
         <Text style={styles.noteText}>
           Phí đặt chỗ ngồi sẽ được hoàn trả 100% nếu hủy đặt chỗ trước 24 giờ.
@@ -322,5 +325,4 @@ const styles = StyleSheet.create({
   footerButton: {
     marginBottom: 12,
   },
-  timeSelectContainer: {},
 });

@@ -40,6 +40,7 @@ export async function initSequelize() {
     await orderModels.OrderStatus.insertDefaultOrderStatuses();
   } catch (error) {
     throw new InternalServerError("Failed to connect to database");
+    // throw error;
   }
 
   return appConnection;

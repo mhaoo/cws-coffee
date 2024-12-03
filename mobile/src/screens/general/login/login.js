@@ -60,7 +60,7 @@ export default Login = function ({ navigation }) {
     //       password: inputPass,
     //     }
     //   );
-    //   const { accessToken, refreshToken } = response.data;
+    // const { accessToken, refreshToken } = response.data;
     //   console.log(response.data);
 
     navigation.navigate("Home");

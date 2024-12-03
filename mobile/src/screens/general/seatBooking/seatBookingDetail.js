@@ -17,7 +17,7 @@ const { width } = Dimensions.get("window");
 
 const currentUserId = "123"; // ID người dùng hiện tại
 
-export default function SeatBookingDetail() {
+export default SeatBookingDetail = function ({ navigation }) {
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startTime, setStartTime] = useState(null);
@@ -152,6 +152,10 @@ export default function SeatBookingDetail() {
     color: event.userId === currentUserId ? "#4CAF50" : "#D3D3D3",
   }));
 
+  const handleConfirmPress = () => {
+    navigation.navigate("Xác nhận đặt chỗ");
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity style={styles.selectBox} onPress={toggleCalendar}>
@@ -257,9 +261,30 @@ export default function SeatBookingDetail() {
         onConfirm={handleConfirmTime}
         onCancel={() => setPickerVisible(false)}
       />
+
+      <View style={styles.footerContainer}>
+        <View style={styles.footerContent}>
+          <View style={styles.footerInfo}>
+            <Text style={styles.capacityText}>Số lượng tối đa:</Text>
+            <Text style={styles.capacityText}>10</Text>
+          </View>
+          <View style={styles.footerInfo}>
+            <Text style={styles.priceText}>Giá:</Text>
+            <Text style={styles.priceText}>55.000 đ/giờ</Text>
+          </View>
+        </View>
+        <GeneralButton
+          text="Kiểm tra thông tin và xác nhận"
+          style={styles.footerButton}
+          onPress={handleConfirmPress}
+        />
+        <Text style={styles.noteText}>
+          Phí đặt chỗ ngồi sẽ được hoàn trả 100% nếu hủy đặt chỗ trước 24 giờ.
+        </Text>
+      </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -309,5 +334,29 @@ const styles = StyleSheet.create({
   weekViewContainer: {
     height: 400,
     marginTop: 16,
+    marginBottom: 16,
+  },
+  footerContainer: {
+    paddingHorizontal: 0,
+    marginHorizontal: -16,
+    backgroundColor: "#FFFFFF",
+  },
+  footerContent: {
+    flexDirection: "row",
+  },
+  footerInfo: {
+    flex: 0.5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 12,
+  },
+  footerButton: {
+    marginBottom: 12,
+  },
+  noteText: {
+    fontSize: 14,
+    color: "#A8A8A8",
+    marginHorizontal: 20,
+    marginBottom: 12,
   },
 });

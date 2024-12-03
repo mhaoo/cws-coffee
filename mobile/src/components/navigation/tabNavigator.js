@@ -8,6 +8,7 @@ import product from "../../screens/general/product/product";
 import seatBooking from "../../screens/general/seatBooking/seatBooking";
 import rank from "../../screens/general/rank/rank";
 import others from "../../screens/general/others/others";
+import Scanner from "../../screens/general/scan/scanner";
 
 import ProductHeader from "../header/productHeader";
 import SeatBookingHeader from "../header/seatBookingHeader";
@@ -34,7 +35,7 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Trang chủ"
         component={home}
         options={{
@@ -47,7 +48,7 @@ const BottomTabNavigator = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Sản phẩm"
         component={product}
@@ -72,6 +73,19 @@ const BottomTabNavigator = () => {
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
               name="seat-outline"
+              color={focused ? "#93540A" : "#A8A8A8"}
+              size={24}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Quét mã"
+        component={Scanner}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons
+              name="line-scan"
               color={focused ? "#93540A" : "#A8A8A8"}
               size={24}
             />

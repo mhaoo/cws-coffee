@@ -23,7 +23,7 @@
     "@stripe/stripe-react-native": "^0.40.0",
     "axios": "^1.7.7",
     "axios-auth-refresh": "^3.3.6",
-    "expo": "~51.0.28",
+    "expo": "^52.0.33",
     "expo-constants": "~16.0.2",
     "expo-firebase-core": "^6.0.0",
     "expo-firebase-recaptcha": "^2.3.1",
